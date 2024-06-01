@@ -1,5 +1,5 @@
 
-package Multijugador;
+package Multijugador_2_Servidores;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

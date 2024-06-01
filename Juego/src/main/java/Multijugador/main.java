@@ -4,18 +4,12 @@
  */
 package Multijugador;
 
-import java.awt.Color;
-
 /**
  *
  * @author carlos
  */
-public class PruebaJ2 {
-    
+public class main {
     public static void main(String[] args) {
-        Jugador j1 = new Jugador("Pepe",Color.RED,6000,"10.68.17.31");
-        j1.Conectar();
-        j1.jugar();
+        System.out.println("Hello World!");
     }
-    
 }

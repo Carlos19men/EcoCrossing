@@ -1,5 +1,5 @@
 
-package Multijugador;
+package Multijugador_2_Servidores;
 
 import javax.swing.JPanel; 
 import java.awt.Dimension; 

@@ -1,4 +1,4 @@
-package Multijugador;
+package Multijugador_2_Servidores;
 
 /**
  *
