@@ -11,6 +11,6 @@ package com.mycompany.juego;
 public class Juego {
 
     public static void main(String[] args) {
-        System.out.println("Hello World! adios amor me voy de esta vez para siempre");
+        System.out.println("Hello World! soy maria");
     }
 }
