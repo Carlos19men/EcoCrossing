@@ -9,5 +9,12 @@ package movimiento;
  * @author carlos
  */
 public class Hola {
+    private String hola; 
+
+    public Hola() {
+    }
     
+    public void saluda(){
+        System.out.println("hola");
+    }
 }
