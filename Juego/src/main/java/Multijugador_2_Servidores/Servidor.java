@@ -63,8 +63,7 @@ public class Servidor extends Observable implements Runnable {
                 
             }
         } catch (IOException ex){
-            Logger.getLogger(Servidor.class.getName()); 
-            
+            System.out.println(ex.getMessage());
         }
         
     }
