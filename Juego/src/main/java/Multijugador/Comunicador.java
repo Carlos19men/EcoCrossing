@@ -15,8 +15,7 @@ import java.util.Arrays;
  *
  * @author carlos
  */
-public class Comunicador {
-    private byte[] buffer = new byte[252]; 
+public class Comunicador  extends Thread{
     private int puerto; 
 
     public Comunicador() {
@@ -30,11 +29,11 @@ public class Comunicador {
     
     //metodos 
     public void enviar(String ruta, int puerto, String mensaje){
+        byte [] buffer = new byte[254]; 
         try { 
             InetAddress direccion = InetAddress.getByName(ruta); 
 
             DatagramSocket socket = new DatagramSocket();
-            limpiarBuffer(); 
             buffer = mensaje.getBytes(); 
             
             DatagramPacket pregunta = new DatagramPacket(buffer,buffer.length,direccion,puerto); 
@@ -52,15 +51,10 @@ public class Comunicador {
         
     }
     
-    public void limpiarBuffer(){
-        Arrays.fill(buffer,(byte) 0);
-    }
-    
     public DatagramPacket recibirPaquete(){
-        
+        byte [] buffer = new byte[255]; 
         try { 
             DatagramSocket socket = new DatagramSocket(puerto);
-            limpiarBuffer(); 
             DatagramPacket peticion = new DatagramPacket(buffer,buffer.length);
             
             System.out.println("Esperando mensaje...");
@@ -88,11 +82,18 @@ public class Comunicador {
         
         System.out.println("Se ha conectado el jugador: " + nombre);
         
+        System.out.println("ruta: "+ruta.getHostAddress());
+        System.out.println("puerto: "+paquete.getPort());
+        //enviar(ruta.getHostName(),6000,"Te he agregado a mi servidor"); 
         
-        System.out.println(paquete.getPort());
-        enviar("localhost",6000,"Te he agregado a mi servidor"); 
     }
     
+    @Override
+    public void run(){
+        //estaremos constatemente enviando un mensaje
+        System.out.println("este es un hilo");
+        
+    }
     public String recibirMensaje(){
         return traducirPaquete(recibirPaquete());
     }

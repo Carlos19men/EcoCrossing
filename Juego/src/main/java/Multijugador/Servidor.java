@@ -13,7 +13,7 @@ package Multijugador;
 public class Servidor {
     public static void main(String args[]){
         Comunicador server = new Comunicador(5000); 
-        server.crearServidor();
+        server.run(); 
     }
     
 }
