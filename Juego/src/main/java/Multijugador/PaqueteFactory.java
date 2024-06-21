@@ -4,16 +4,18 @@
  */
 package Multijugador;
 
-
-
 /**
  *
  * @author carlos
  */
-public class Cliente {
-    public static void main(String args[]){
-        Comunicador beatriz = new Comunicador(6000);
-        beatriz.enviar("localhost", 5000, "Beatriz");
-        System.out.println(beatriz.recibirMensaje()); 
+public class PaqueteFactory {
+
+    public PaqueteFactory() {
+    }
+    
+    
+    //metodo
+    public Paquete crearPaquete(String tipo){
+        return new Paquete(tipo); 
     }
 }

@@ -2,75 +2,56 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Multijugador;
+package Jugador;
 
-import Jugador.Jugador;
+import Multijugador.ManejadorPaquete;
+import Multijugador.Paquete;
+import Personaje.Personaje;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
-import java.util.List; 
-import java.util.LinkedList; 
-
 
 /**
  *
  * @author carlos
  */
-public class Servidor implements ManejadorPaquete{
-    private int puerto; 
-    private InetAddress IP; 
-    private List<Jugador> jugadores = new LinkedList<>(); 
+public class Jugador implements ManejadorPaquete {
+    private String id; 
+    private Personaje personaje; 
 
-    public Servidor(int puerto, InetAddress IP) {
-        this.puerto = puerto;
-        this.IP = IP;
+    public Jugador() {
     }
 
-    public int getPuerto() {
-        return puerto;
+    public Jugador(String id, Personaje personaje) {
+        this.id = id;
+        this.personaje = personaje;
     }
 
-    public void setPuerto(int puerto) {
-        this.puerto = puerto;
+    public String getId() {
+        return id;
     }
 
-    public InetAddress getIP() {
-        return IP;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setIP(InetAddress IP) {
-        this.IP = IP;
+    public Personaje getPersonaje() {
+        return personaje;
     }
 
-    public List<Jugador> getJugadores() {
-        return jugadores;
+    public void setPersonaje(Personaje personaje) {
+        this.personaje = personaje;
     }
 
-    public void setJugadores(List<Jugador> jugadores) {
-        this.jugadores = jugadores;
-    }
     
     //metodos 
-    
-    public void agregar(Jugador jugador){
-        
-    }
-    
-    public void eliminar(Jugador jugador){
-        
-    }
-    
-    public void notificar(){
-        
-    }
-
     @Override
     public void enviarPaquete(Paquete packet, InetAddress ruta, int puerto) {
-        
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public Byte[] desempaquetar(Paquete paquete) {
-                return null; 
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
@@ -82,6 +63,7 @@ public class Servidor implements ManejadorPaquete{
     public DatagramPacket empaquetar(Byte[] arreglo) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+    
     
     
 }
