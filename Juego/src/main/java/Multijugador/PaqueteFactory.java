@@ -9,13 +9,5 @@ package Multijugador;
  * @author carlos
  */
 public class PaqueteFactory {
-
-    public PaqueteFactory() {
-    }
     
-    
-    //metodo
-    public Paquete crearPaquete(String tipo){
-        return new Paquete(tipo); 
-    }
 }

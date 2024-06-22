@@ -64,12 +64,12 @@ public class Servidor implements ManejadorPaquete{
     }
 
     @Override
-    public void enviarPaquete(Paquete packet, InetAddress ruta, int puerto) {
+    public void enviarPaquete(PaqueteFactory packet, InetAddress ruta, int puerto) {
         
     }
 
     @Override
-    public Byte[] desempaquetar(Paquete paquete) {
+    public Byte[] desempaquetar(PaqueteFactory paquete) {
                 return null; 
     }
 
@@ -80,6 +80,21 @@ public class Servidor implements ManejadorPaquete{
 
     @Override
     public DatagramPacket empaquetar(Byte[] arreglo) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void enviarPaquete(DatagramPacket packet) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public DatagramPacket empaquetar(Byte[] arreglo, InetAddress ip, int puerto) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public String[] desempaquetar(DatagramPacket paquete) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
