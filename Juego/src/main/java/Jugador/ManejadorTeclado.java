@@ -2,7 +2,7 @@ package Jugador;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class ManejoTeclas implements KeyListener{
+public class ManejadorTeclado implements KeyListener{
     public boolean arribaPresionado, abajoPresionado, izquierdaPresionado, derechaPresionado, recogerObjetoPresionado;
 
     @Override

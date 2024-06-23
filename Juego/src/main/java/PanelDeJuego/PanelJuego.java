@@ -1,10 +1,8 @@
-package Jugador;
-import EcoCrossing.net.ClienteJuego;
-import EcoCrossing.net.ServidorJuego;
-import EcoCrossing.net.paquetes.Paquete00Acceder;
-import Entidades.*;
-import Entidades.JugadorMultijugador;
-import Objeto.SuperObjeto;
+package PanelDeJuego;
+import Jugador.Jugador;
+import Jugador.ManejadorTeclado;
+import Objetos.ColocadorDeObjetos;
+import Objetos.SuperObjeto;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -12,8 +10,8 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import Recuadros.AdministradorRecuadros;
 import java.awt.Font;
+import java.awt.event.KeyListener;
 import javax.swing.JLabel;
 
 public class PanelJuego extends JPanel implements Runnable{    
@@ -37,35 +35,34 @@ public class PanelJuego extends JPanel implements Runnable{
     //FPS
     int FPS = 60;
     
-    //Atributos juego
+    //Atributos del juego
     public AdministradorRecuadros administradorRecuadros = new AdministradorRecuadros(this);
-    public ManejoTeclas manejoTeclas = new ManejoTeclas();
+    public ManejadorTeclado manejoTeclas = new ManejadorTeclado();
     Sonido musica= new Sonido();
     Sonido efectosSonido= new Sonido();
-    public VerificarColision verificarC= new VerificarColision(this);
-    public AssetSetter aSetter= new AssetSetter(this);
-    public UI ui= new UI(this);
+    public VerificarColision verificarC = new VerificarColision(this);
+    public ColocadorDeObjetos aSetter= new ColocadorDeObjetos(this);
+    public HUD hud = new HUD(this);
     Thread juegoThread;
     
     // Entidades y objetos:
-    public Jugador jugador = new Jugador("",this, manejoTeclas);
     public SuperObjeto obj[]= new SuperObjeto[10];
     
     
-    //Atributos multijugador
-    public ArrayList<JugadorMultijugador> jugadoresConectados = new ArrayList<>();
-    public ClienteJuego clienteSocket;
-    public ServidorJuego servidorSocket;
-    public JLabel ipLabel;
+    //Atributos 
+    public JLabel ipLabel;  // <---------------------- agregar al HUD
     private String direccionIP; 
+    
+    //Operador del panel 
+    public Jugador jugador; 
     
     
     // Constructor
-    public PanelJuego() { // Sin parametros
+    public PanelJuego(Jugador jugador, KeyListener teclado) { // Sin parametros
         this.setPreferredSize(new Dimension(anchoPantalla, largoPantalla));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
-        this.addKeyListener(manejoTeclas);
+        this.addKeyListener(teclado);
         this.setFocusable(true);
         this.setLayout(null); // Usar posicionamiento absoluto
 
@@ -75,6 +72,10 @@ public class PanelJuego extends JPanel implements Runnable{
         ipLabel.setFont(new Font("Arial", Font.BOLD, 14));
         ipLabel.setBounds(10, 10, 300, 20); // Posicionar ipLabel en la esquina superior izquierda
         this.add(ipLabel); // Añadir ipLabel directamente al PanelJuego
+        
+        
+        //operador del panel 
+        this.jugador = jugador;    
     }
 
     public void setIPText(String direccionIP) {
@@ -89,27 +90,12 @@ public class PanelJuego extends JPanel implements Runnable{
     }
     
     //Evitar un ConcurrentModificationException (Una entidad sometida a lectura y escritura al mismo tiempo)
-    public synchronized ArrayList<JugadorMultijugador> getJugadoresConectados(){
-        return this.jugadoresConectados;
-    }
-    
-    public void agregarJugador(JugadorMultijugador jugador){
-        getJugadoresConectados().add(jugador);
-        repaint();
-    }
-    
-    public void eliminarJugador(String nombreUsuario){
-        for(JugadorMultijugador j: this.getJugadoresConectados())
-            if(j.getNombreUsuario().equals(nombreUsuario)){
-                this.getJugadoresConectados().remove(j);
-                break;
-            }             
-    }
-    
     public void iniciarjuegoThread() {
         juegoThread = new Thread(this);
         juegoThread.start();
 
+        
+        //Creamos la partida 
         String servidorIP = "";
         if (JOptionPane.showConfirmDialog(this, "Desea iniciar el servidor?") == 0) {
             servidorSocket = new ServidorJuego(this);

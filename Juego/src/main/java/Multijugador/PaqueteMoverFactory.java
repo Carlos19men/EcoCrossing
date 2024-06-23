@@ -18,10 +18,10 @@ public class PaqueteMoverFactory {
    
     }
 
-    public DatagramPacket crear(String nombre, String sprite,int x, int y, InetAddress ruta, int puerto) {
-        String mensaje = MOVER+","+nombre +","+x+","+y+","+sprite;
+    public DatagramPacket crear(String nombre, String sprite,int x, int y,String direccion, InetAddress ruta, int puerto) {
+        String mensaje = MOVER+","+nombre+","+x+","+y+","+sprite+","+direccion;
         //Creamos el paquete 
-        return new DatagramPacket(mensaje.getBytes(),mensaje.getBytes().length,ruta,puerto); 
+         return PaqueteFactory.crear(mensaje, ruta, puerto); 
     }
     
 }

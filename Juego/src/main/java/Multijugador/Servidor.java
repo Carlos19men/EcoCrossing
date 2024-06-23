@@ -5,11 +5,17 @@
 package Multijugador;
 
 import Jugador.Jugador;
+import Jugador.JugadorFactory;
+import PanelDeJuego.PanelJuego;
+import java.io.IOException;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
 import java.util.List; 
-import java.util.LinkedList; 
-
+import java.util.ArrayList; 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,14 +23,21 @@ import java.util.LinkedList;
  */
 public class Servidor implements ManejadorPaquete{
     private int puerto; 
+    private DatagramSocket socket; 
     private InetAddress IP; 
-    private List<Jugador> jugadores = new LinkedList<>(); 
+    private List<Jugador> jugadores = new ArrayList<>(); 
+    private AdaptadorServidorPanel adaptadorPanel; 
+    boolean partida; 
 
-    public Servidor(int puerto, InetAddress IP) {
+    public Servidor( InetAddress IP,int puerto) throws SocketException {
         this.puerto = puerto;
         this.IP = IP;
+        
+        //encerrar en una exepcion 
+        this.socket = new DatagramSocket(puerto); 
     }
 
+    //set / get 
     public int getPuerto() {
         return puerto;
     }
@@ -49,54 +62,153 @@ public class Servidor implements ManejadorPaquete{
         this.jugadores = jugadores;
     }
     
-    //metodos 
     
+    
+    //metodos 
     public void agregar(Jugador jugador){
-        
+       jugadores.add(jugador); 
     }
     
     public void eliminar(Jugador jugador){
-        
+        jugadores.remove(jugador); 
     }
     
     public void notificar(){
-        
-    }
-
-    @Override
-    public void enviarPaquete(PaqueteFactory packet, InetAddress ruta, int puerto) {
-        
-    }
-
-    @Override
-    public Byte[] desempaquetar(PaqueteFactory paquete) {
-                return null; 
-    }
-
-    @Override
-    public DatagramPacket recibirPaquete() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public DatagramPacket empaquetar(Byte[] arreglo) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for(Jugador objeto: jugadores){
+            //noficar
+        }
     }
 
     @Override
     public void enviarPaquete(DatagramPacket packet) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            socket.send(packet);
+        } catch (SocketException ex) {
+            Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);  //recuerda crear exepciones 
+        } catch (IOException ex) {
+            Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);  //recuerda
+        }
     }
 
     @Override
-    public DatagramPacket empaquetar(Byte[] arreglo, InetAddress ip, int puerto) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public DatagramPacket recibirPaquete() {
+        byte[] datos = new byte[1024];
+        DatagramPacket paquete = new DatagramPacket(datos, datos.length);
+        try {
+               socket.receive(paquete);
+               System.out.println("Paquete recibido de: " + paquete.getAddress() + ":" + paquete.getPort());
+               return paquete; 
+        } catch (IOException e) {
+           //falta crear un exepcion 
+        }     
+        return null; 
     }
 
-    @Override
+   @Override
     public String[] desempaquetar(DatagramPacket paquete) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return new String(paquete.getData()).trim().split(",");
     }
     
+    public void iniciarPartida(){
+        partida = true; 
+        //Iniciamos la partida 
+        adaptadorPanel.iniciarJuego();
+        
+        //Enviamos un mensaje a cada jugador para que pueden iniciar su partida 
+        notificar(PaqueteMensajeFactory.crearMensaje("La partida a iniciado!")); 
+        
+        
+        
+    }
     
+    public void escucharJugadores(){
+        DatagramPacket paquete; 
+        while(partida){
+            paquete = null; 
+            try {
+                socket.receive(paquete);
+                String[] datos = desempaquetar(paquete); 
+                
+                System.out.println("Paquete recibido! tipo: "+datos[0]);
+                
+                
+                
+                
+                
+            } catch (IOException ex) {
+                Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+            
+        }
+    }
+    
+    public void Interprete(String[] datos){
+        if(datos[0].equalsIgnoreCase("acceder")){
+            //agregamos un nuevo jugador
+        }else if(datos[0].equals("mover")){
+            //Un jugador se ha movido, lo buscamos en la lista 
+            int indice = buscarJugador(datos[1]); 
+            
+            if(indice != -1){
+                jugadores.get(indice).mover(Integer.parseInt(datos[2]),Integer.parseInt(datos[3]));
+                //notificar()  <---------------------- quedaste en la función notificar s
+            }
+        }
+    }
+    
+    public void crearServidor()throws SocketException{
+        //solicitamos el puerto y la ip
+        System.out.println("Servidor creado, puerto: "+puerto+" ip: "+IP.getHostAddress());
+        esperarJugadores(2);
+        System.out.println("Jugadores listos");
+    }
+    
+    public void crearPartida() throws SocketException{
+        crearServidor(); 
+        iniciarPartida(); 
+        
+    }
+    
+    public void finalizarPartida(){
+        
+    }
+    
+    public void esperarJugadores(int numeroJugadores) throws SocketException{
+        int cantidad = 0; 
+        
+        while(cantidad < numeroJugadores){
+            DatagramPacket paquete = recibirPaquete(); 
+            
+            String[] datos = desempaquetar(paquete); 
+            
+            //si el paquete es de tipo acceder creamos el jugador y lo agregamos a la lista
+            if(datos[0].equals("acceder")){
+                agregar(JugadorFactory.crearJugador(datos,paquete.getAddress(),paquete.getPort()));       
+                cantidad++; 
+            }
+        }
+        
+        System.out.println("Jugadores listos");
+    } 
+    
+    public void AdaptarPanel(PanelJuego panel){
+        adaptadorPanel = new AdaptadorServidorPanel(panel); 
+    }
+    
+    public void notificar(String mensaje){
+        for(Jugador jugador: jugadores){
+            enviarPaquete(PaqueteFactory.crear(mensaje, jugador.getIp(), jugador.getPuerto())); 
+        }
+    }
+    
+    public int buscarJugador(String nombre){
+        for(Jugador jugador: jugadores){
+            if(jugador.getId().equalsIgnoreCase(nombre)){
+                return jugadores.indexOf(jugador); 
+            }
+        }
+        return -1; 
+    }
 }

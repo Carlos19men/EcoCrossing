@@ -6,6 +6,7 @@ package Jugador;
 
 import Multijugador.Servidor;
 import Personaje.Personaje;
+import java.net.SocketException;
 
 /**
  *
@@ -17,8 +18,8 @@ public class Administrador extends Jugador{
     public Administrador() {
     }
 
-    public Administrador(String id, Personaje personaje) {
-        super(id, personaje);
+    public Administrador(String id, Personaje personaje,int puerto) throws SocketException {
+        super(id, personaje,puerto);
     }
     
     

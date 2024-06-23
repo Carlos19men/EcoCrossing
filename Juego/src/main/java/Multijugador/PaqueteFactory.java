@@ -4,10 +4,21 @@
  */
 package Multijugador;
 
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+
 /**
  *
  * @author carlos
  */
 public class PaqueteFactory {
+
+    public PaqueteFactory() {
+    }
+
+    public static DatagramPacket crear(String mensaje, InetAddress ruta, int port){
+        return new DatagramPacket(mensaje.getBytes(), mensaje.getBytes().length, ruta, port); 
+    }
+    
     
 }

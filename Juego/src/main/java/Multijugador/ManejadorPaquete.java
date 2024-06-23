@@ -14,6 +14,5 @@ import java.net.InetAddress;
 public interface ManejadorPaquete {
     public void enviarPaquete(DatagramPacket packet);
     public DatagramPacket recibirPaquete(); 
-    public DatagramPacket empaquetar(Byte[] arreglo, InetAddress ip, int puerto); 
     public String[] desempaquetar(DatagramPacket paquete); 
 }

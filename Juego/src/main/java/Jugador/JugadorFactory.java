@@ -5,6 +5,8 @@
 package Jugador;
 
 import Personaje.Personaje;
+import java.net.InetAddress;
+import java.net.SocketException;
 
 /**
  *
@@ -20,7 +22,11 @@ public class JugadorFactory {
         return new Jugador(); 
     }
     
-    public Jugador crearJugador(String id, Personaje personaje){
-        return new Jugador(id,personaje); 
+    public static Jugador crearJugador(String id, String personaje,InetAddress ip, int puerto) throws SocketException{
+        return new Jugador(id,personaje,ip,puerto); 
+    }
+    
+    public static Jugador crearJugador(String[] datos,InetAddress ip,int puerto) throws SocketException{
+        return new Jugador(datos[1],datos[2],ip,puerto); 
     }
 }

@@ -20,7 +20,7 @@ public class PaqueteAccederFactory{
     
     public DatagramPacket crear(String nombre, String sprite, int x, int y, InetAddress ruta, int puerto) {
         String mensaje = ACCEDER+","+nombre+","+x+","+y+","+sprite; 
-        return new DatagramPacket(mensaje.getBytes(), mensaje.getBytes().length, ruta,puerto); 
+        return PaqueteFactory.crear(mensaje, ruta, puerto); 
     }
     
 }

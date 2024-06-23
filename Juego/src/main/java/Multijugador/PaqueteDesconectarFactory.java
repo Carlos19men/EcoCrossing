@@ -11,17 +11,16 @@ import java.net.InetAddress;
  *
  * @author carlos
  */
-public class PaqueteDesconectarFactory {
+public class PaqueteDesconectarFactory{
     final String DESCONECTAR = "desconectar"; 
     private String nombre; 
 
-    public PaqueteDesconectarFactory() {
-     
+    public PaqueteDesconectarFactory(){
     }
     
     public DatagramPacket crear(String nombre, InetAddress ruta, int puerto) {
         String mensaje = DESCONECTAR+","+nombre; 
-        return new DatagramPacket(mensaje.getBytes(), mensaje.getBytes().length, ruta, puerto); 
+        return PaqueteFactory.crear(mensaje, ruta, puerto); 
     }
     
 }
