@@ -15,4 +15,5 @@ public interface ManejadorPaquete {
     public void enviarPaquete(DatagramPacket packet);
     public DatagramPacket recibirPaquete(); 
     public String[] desempaquetar(DatagramPacket paquete); 
+    public 
 }

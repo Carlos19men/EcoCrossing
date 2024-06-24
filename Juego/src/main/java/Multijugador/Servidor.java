@@ -66,7 +66,7 @@ public class Servidor implements ManejadorPaquete{
     
     //metodos 
     public void agregar(Jugador jugador){
-       jugadores.add(jugador); 
+        jugadores.add(jugador); 
     }
     
     public void eliminar(Jugador jugador){
@@ -115,8 +115,10 @@ public class Servidor implements ManejadorPaquete{
         adaptadorPanel.iniciarJuego();
         
         //Enviamos un mensaje a cada jugador para que pueden iniciar su partida 
-        notificar(PaqueteMensajeFactory.crearMensaje("La partida a iniciado!")); 
+        notificar(PaqueteMensajeFactory.crearMensaje("La partida a iniciado!").split(",")); 
         
+        //Escuchamos a los jugadore en todos momento
+        escucharJugadores(); 
         
         
     }
@@ -126,13 +128,16 @@ public class Servidor implements ManejadorPaquete{
         while(partida){
             paquete = null; 
             try {
+                //Esperamos las notificaciones del juego 
                 socket.receive(paquete);
-                String[] datos = desempaquetar(paquete); 
                 
+                //Recibimos el paquete y lo desempaquetamos 
+                String[] datos = desempaquetar(paquete); 
                 System.out.println("Paquete recibido! tipo: "+datos[0]);
                 
                 
-                
+                //interpretamos el paquete
+                interpretar(paquete); 
                 
                 
             } catch (IOException ex) {
@@ -140,20 +145,27 @@ public class Servidor implements ManejadorPaquete{
             }
             
             
-            
+            //Simultaneamente se esta ejecutando el juego por el hilo de IniciarJuegoThread
+            //Este ciclo continuará hasta que el admin decida finalizar el juego: partida = false
         }
     }
     
-    public void Interprete(String[] datos){
+    public void interpretar(DatagramPacket paquete) throws SocketException{
+        String[] datos = desempaquetar(paquete); 
+        
         if(datos[0].equalsIgnoreCase("acceder")){
             //agregamos un nuevo jugador
+            agregar(JugadorFactory.crearJugador(datos,paquete.getAddress(),paquete.getPort())); 
+            //exepcion en caso de alguna falla 
+            
         }else if(datos[0].equals("mover")){
             //Un jugador se ha movido, lo buscamos en la lista 
             int indice = buscarJugador(datos[1]); 
             
             if(indice != -1){
+                //El jugador existe, por ende, cambiamos sus coordenadas y notificamos 
                 jugadores.get(indice).mover(Integer.parseInt(datos[2]),Integer.parseInt(datos[3]));
-                //notificar()  <---------------------- quedaste en la función notificar s
+                notificar(datos,indice);   
             }
         }
     }
@@ -172,6 +184,7 @@ public class Servidor implements ManejadorPaquete{
     }
     
     public void finalizarPartida(){
+        //se le envia una notificación a cada jugador diciendo que la partida ha finalizado
         
     }
     
@@ -187,6 +200,11 @@ public class Servidor implements ManejadorPaquete{
             if(datos[0].equals("acceder")){
                 agregar(JugadorFactory.crearJugador(datos,paquete.getAddress(),paquete.getPort()));       
                 cantidad++; 
+                
+                //notficamos a los jugadores que se han podido conectar
+                String[] mensaje; 
+                mensaje.add
+                notificar(mensaje);   //<-- aqui mandamos un arreglo y yaaaaaa
             }
         }
         
@@ -197,9 +215,20 @@ public class Servidor implements ManejadorPaquete{
         adaptadorPanel = new AdaptadorServidorPanel(panel); 
     }
     
-    public void notificar(String mensaje){
+    public void notificar(String[] datos){
+        String mensaje = String.join(",", datos); 
         for(Jugador jugador: jugadores){
             enviarPaquete(PaqueteFactory.crear(mensaje, jugador.getIp(), jugador.getPuerto())); 
+        }
+    }
+    
+    public void notificar(String[] datos, int indiceOmitir){
+        String mensaje = String.join(",", datos); 
+
+        for(int i = 0; i < jugadores.size(); i++){
+            if(i != indiceOmitir){
+                enviarPaquete(PaqueteFactory.crear(mensaje, jugadores.get(i).getIp(), jugadores.get(i).getPuerto())); 
+            }
         }
     }
     
