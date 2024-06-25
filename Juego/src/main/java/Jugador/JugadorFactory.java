@@ -29,4 +29,8 @@ public class JugadorFactory {
     public static Jugador crearJugador(String[] datos,InetAddress ip,int puerto) throws SocketException{
         return new Jugador(datos[1],datos[2],ip,puerto); 
     }
+    
+        public static Jugador crearJugador(String id, String personaje){
+        return new Jugador(id,personaje); 
+    }
 }

@@ -9,5 +9,18 @@ package Personaje;
  * @author carlos
  */
 public class Personaje  implements CargarSprite{
+    private String sprite; 
+
+    public Personaje() {
+    }
+
+    public String getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(String sprite) {
+        this.sprite = sprite;
+    }
+    
     
 }

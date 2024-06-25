@@ -1,4 +1,5 @@
 package PanelDeJuego;
+import Jugador.Jugador;
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -82,30 +83,30 @@ public final class AdministradorRecuadros {
     }
 }
         
-    public void dibujar(Graphics2D g2){
-   int columnaMundo = 0;
-   int filaMundo = 0;
-   
-   while (columnaMundo < panelJuego.maxColumnasMundo && filaMundo < panelJuego.maxFilasMundo) {
-       int numeroRecuadro = numeroRecuadroMapa[columnaMundo][filaMundo];
-       int mundoX = columnaMundo * panelJuego.tamannoRecuadros;
-       int mundoY = filaMundo * panelJuego.tamannoRecuadros;
-       int pantallaX = mundoX - panelJuego.jugador.mundoX + panelJuego.jugador.pantallaX;
-       int pantallaY = mundoY - panelJuego.jugador.mundoY + panelJuego.jugador.pantallaY;
-        
-       if (mundoX + panelJuego.tamannoRecuadros > panelJuego.jugador.mundoX - panelJuego.jugador.pantallaX
-          && mundoX - panelJuego.tamannoRecuadros < panelJuego.jugador.mundoX + panelJuego.jugador.pantallaX 
-          && mundoY + panelJuego.tamannoRecuadros > panelJuego.jugador.mundoY - panelJuego.jugador.pantallaY
-          && mundoY - panelJuego.tamannoRecuadros < panelJuego.jugador.mundoY + panelJuego.jugador.pantallaY) {
-            g2.drawImage(recuadros[numeroRecuadro].imagen, pantallaX, pantallaY, panelJuego.tamannoRecuadros, panelJuego.tamannoRecuadros, null);
+    public void dibujar(Graphics2D g2, Jugador jugador){
+        int columnaMundo = 0;
+        int filaMundo = 0;
+
+        while (columnaMundo < panelJuego.maxColumnasMundo && filaMundo < panelJuego.maxFilasMundo) {
+            int numeroRecuadro = numeroRecuadroMapa[columnaMundo][filaMundo];
+            int mundoX = columnaMundo * panelJuego.tamannoRecuadros;
+            int mundoY = filaMundo * panelJuego.tamannoRecuadros;
+            int pantallaX = mundoX - jugador.mundoX + jugador.pantallaX;
+            int pantallaY = mundoY - jugador.mundoY + jugador.pantallaY;
+
+            if (mundoX + panelJuego.tamannoRecuadros > jugador.mundoX - jugador.pantallaX
+               && mundoX - panelJuego.tamannoRecuadros < jugador.mundoX + jugador.pantallaX 
+               && mundoY + panelJuego.tamannoRecuadros > jugador.mundoY - jugador.pantallaY
+               && mundoY - panelJuego.tamannoRecuadros < jugador.mundoY + jugador.pantallaY) {
+                 g2.drawImage(recuadros[numeroRecuadro].imagen, pantallaX, pantallaY, panelJuego.tamannoRecuadros, panelJuego.tamannoRecuadros, null);
+            }
+            columnaMundo++;
+            if (columnaMundo == panelJuego.maxColumnasMundo) {
+                columnaMundo = 0;
+                filaMundo++;
+            }
        }
-       columnaMundo++;
-       if (columnaMundo == panelJuego.maxColumnasMundo) {
-           columnaMundo = 0;
-           filaMundo++;
-       }
-   }
-}
+    }
     
     
 }

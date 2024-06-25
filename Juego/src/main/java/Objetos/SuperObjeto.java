@@ -4,6 +4,7 @@
  */
 package Objetos;
 
+import Jugador.Jugador;
 import PanelDeJuego.PanelJuego; 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -22,14 +23,14 @@ public class SuperObjeto {
     public int areaSolidaDefaultX=0;
     public  int areaSolidaDefaultY=0;
     
-    public void dibujar (Graphics2D g2, PanelJuego panelJuego){
-       int pantallaX = mundoX - panelJuego.jugador.mundoX + panelJuego.jugador.pantallaX;
-       int pantallaY = mundoY - panelJuego.jugador.mundoY + panelJuego.jugador.pantallaY;
+    public void dibujar (Graphics2D g2, PanelJuego panelJuego, Jugador jugador){
+       int pantallaX = mundoX - jugador.mundoX + jugador.pantallaX;
+       int pantallaY = mundoY - jugador.mundoY + jugador.pantallaY;
         
-       if (mundoX + panelJuego.tamannoRecuadros > panelJuego.jugador.mundoX - panelJuego.jugador.pantallaX
-          && mundoX - panelJuego.tamannoRecuadros < panelJuego.jugador.mundoX + panelJuego.jugador.pantallaX 
-          && mundoY + panelJuego.tamannoRecuadros > panelJuego.jugador.mundoY - panelJuego.jugador.pantallaY
-          && mundoY - panelJuego.tamannoRecuadros < panelJuego.jugador.mundoY + panelJuego.jugador.pantallaY) {
+       if (mundoX + panelJuego.tamannoRecuadros > jugador.mundoX - jugador.pantallaX
+          && mundoX - panelJuego.tamannoRecuadros < jugador.mundoX + jugador.pantallaX 
+          && mundoY + panelJuego.tamannoRecuadros > jugador.mundoY - jugador.pantallaY
+          && mundoY - panelJuego.tamannoRecuadros < jugador.mundoY + jugador.pantallaY) {
             g2.drawImage(imagen, pantallaX, pantallaY, panelJuego.tamannoRecuadros, panelJuego.tamannoRecuadros, null);
        }
     }

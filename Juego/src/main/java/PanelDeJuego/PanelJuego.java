@@ -1,6 +1,7 @@
 package PanelDeJuego;
 import Jugador.Jugador;
 import Jugador.ManejadorTeclado;
+import Multijugador.Servidor;
 import Objetos.ColocadorDeObjetos;
 import Objetos.SuperObjeto;
 import java.awt.Color;
@@ -15,7 +16,7 @@ import java.awt.event.KeyListener;
 import javax.swing.JLabel;
 
 public class PanelJuego extends JPanel implements Runnable{    
-    //Atributos de la pantalla
+ //Contantes para las pantallas 
     final int recuadros = 16; //16x16 recuadros
     final int escala = 3;
     public final int tamannoRecuadros = recuadros * escala; //48x48 recuadros
@@ -23,103 +24,87 @@ public class PanelJuego extends JPanel implements Runnable{
     public final int maxFilas = 12;
     public final int anchoPantalla = tamannoRecuadros * maxColumnas; // 48x16 = 768 pixeles
     public final int largoPantalla = tamannoRecuadros * maxFilas; // 48x12 = 576 pixeles
-    
-    //Atributos y ajustes del mundo
-    //***** Cambiar de acuerdo al tamanno exacto del mapa del archivo **************
     public final int maxColumnasMundo = 64;
     public final int maxFilasMundo = 32;
-    //
     public final int anchoMundo = tamannoRecuadros * maxColumnasMundo; // 48x50 = 2400 pixeles
     public final int alturaMundo = tamannoRecuadros * maxFilasMundo; //  48x50 = 2400 pixeles
     
     //FPS
     int FPS = 60;
     
-    //Atributos del juego
-    public AdministradorRecuadros administradorRecuadros = new AdministradorRecuadros(this);
-    public ManejadorTeclado manejoTeclas = new ManejadorTeclado();
-    Sonido musica= new Sonido();
-    Sonido efectosSonido= new Sonido();
-    public VerificarColision verificarC = new VerificarColision(this);
-    public ColocadorDeObjetos aSetter= new ColocadorDeObjetos(this);
-    public HUD hud = new HUD(this);
+    //Atributos juego
+    public Jugador jugador; 
+    public AdministradorRecuadros administradorRecuadros;
+    Sonido musica;
+    Sonido efectosSonido;
+    public VerificarColision verificarC;
+    public ColocadorObjeto colocadorObjeto;
+    public HUD hud;
     Thread juegoThread;
     
     // Entidades y objetos:
-    public SuperObjeto obj[]= new SuperObjeto[10];
+    public AdaptadorPanelToServer adaptadorServer; 
+    public SuperObjeto[] obj;   
     
-    
-    //Atributos 
-    public JLabel ipLabel;  // <---------------------- agregar al HUD
+    //Atributos multijugador
+    public JLabel ipLabel;
     private String direccionIP; 
     
-    //Operador del panel 
-    public Jugador jugador; 
     
+    // Constructor: Jugador administrador
+    public PanelJuego(Jugador jugador, ManejadorTeclado teclado, Servidor server) {
+        this.jugador = jugador; 
+        this.adaptadorServer = new AdaptadorPanelToServer(server); 
+        this.addKeyListener(teclado); 
+    }
     
-    // Constructor
-    public PanelJuego(Jugador jugador, KeyListener teclado) { // Sin parametros
+    //Constructor: Jugador
+
+    public PanelJuego(Jugador jugador, ManejadorTeclado teclado) {
+        this.jugador = jugador; 
+        this.addKeyListener(teclado); 
+    }
+    
+
+    public void inicializarValores(){
+        //Aspecto de la pantalla
         this.setPreferredSize(new Dimension(anchoPantalla, largoPantalla));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
-        this.addKeyListener(teclado);
         this.setFocusable(true);
-        this.setLayout(null); // Usar posicionamiento absoluto
-
+        this.setLayout(null); 
+        
         // Inicializar la etiqueta para mostrar la IP
         ipLabel = new JLabel();
         ipLabel.setForeground(Color.WHITE);
         ipLabel.setFont(new Font("Arial", Font.BOLD, 14));
-        ipLabel.setBounds(10, 10, 300, 20); // Posicionar ipLabel en la esquina superior izquierda
-        this.add(ipLabel); // Añadir ipLabel directamente al PanelJuego
+
+        // Posicionar ipLabel en la esquina superior izquierda
+        ipLabel.setBounds(10, 10, 300, 20); 
+        
+        // Añadir ipLabel directamente al PanelJuego
+        this.add(ipLabel);     
+        
+        // Entidades y objetos:
+        obj = new SuperObjeto[10];
         
         
-        //operador del panel 
-        this.jugador = jugador;    
-    }
-
-    public void setIPText(String direccionIP) {
-        this.direccionIP = direccionIP;
-        ipLabel.setText(direccionIP); // Forzar la actualización del panel
-    }
-
-    //Otros metodos
-    public void setupJuego(){
-        aSetter.setObjeto();
-        reproducirMusica(0); // Reproducimos el tema principal
+        //Atributos juego
+        administradorRecuadros = new AdministradorRecuadros(this);
+        musica = new Sonido();
+        efectosSonido = new Sonido();
+        verificarC = new VerificarColision(this);
+        colocadorObjeto = new ColocadorObjeto(this);
+        hud = new HUD(this);
     }
     
-    //Evitar un ConcurrentModificationException (Una entidad sometida a lectura y escritura al mismo tiempo)
+    
     public void iniciarjuegoThread() {
         juegoThread = new Thread(this);
-        juegoThread.start();
-
-        
-        //Creamos la partida 
-        String servidorIP = "";
-        if (JOptionPane.showConfirmDialog(this, "Desea iniciar el servidor?") == 0) {
-            servidorSocket = new ServidorJuego(this);
-            servidorSocket.start();
-            servidorIP = servidorSocket.obtenerIPLocal();
-            JOptionPane.showMessageDialog(this, "Servidor iniciado. IP del servidor: " + servidorIP);
-            setIPText("IP del servidor: " + servidorIP);  // Actualizar el texto con la IP del servidor
-        } else {
-            servidorIP = JOptionPane.showInputDialog(this, "Ingrese la IP del servidor:", "localhost");
-            setIPText("IP del servidor: " + servidorIP);  // Actualizar el texto con la IP del servidor
-        }
-
-        jugador = new JugadorMultijugador(JOptionPane.showInputDialog(this, "Nombre de usuario: "), this, manejoTeclas, null, -1);
-        agregarJugador((JugadorMultijugador) jugador);
-        Paquete00Acceder accederPaquete = new Paquete00Acceder(jugador.getNombreUsuario(), jugador.mundoX, jugador.mundoY, jugador.direccion);
-
-        if (servidorSocket != null) {
-            servidorSocket.agregarConexion((JugadorMultijugador) jugador, accederPaquete);
-        }
-
-        clienteSocket = new ClienteJuego(this, servidorIP);
-        clienteSocket.start();
-        accederPaquete.escribirDatos(clienteSocket);
+        juegoThread.start();       
     }
+    
+    //Iniciar juego 
     
     @Override
     public void run() {     
@@ -137,44 +122,44 @@ public class PanelJuego extends JPanel implements Runnable{
             ultimoTiempo = tiempoActual;    
            
             if(delta>=1){
-                //Actualiza la informacion
                 actualizar();
-                //Muestra la informacion actualizada en la pantalla
                 repaint();
                 delta--;
             }         
         }        
     }
     
-    public void actualizar(){ 
-        for(JugadorMultijugador j : getJugadoresConectados())
-            j.actualizar();
+    public void actualizar(){
+        jugador.actualizar();
     }
     
+    
+    //metodos para repintar la pantalla
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);  
         Graphics2D g2 = (Graphics2D) g;
         
         //Primero se dibuja el mapa, los objetos y luego el jugador
-        administradorRecuadros.dibujar(g2);
+        administradorRecuadros.dibujar(g2,jugador);
         for (SuperObjeto obj1 : obj) 
             if (obj1 != null) 
-                obj1.dibujar(g2, this);
-        for(JugadorMultijugador j : getJugadoresConectados())
-            j.dibujar(g2);  
+                obj1.dibujar(g2, this, jugador);
+       
         
         // Dibujar el ipLabel encima de todos los demás elementos
         ipLabel.paint(g2);
         
         //UI
-        ui.dibujar(g2);
+        hud.dibujar(g2,jugador);
         
         //Dibujar en la pantalla
         g2.dispose();
     }  
     
-    public void reproducirMusica(int i) {
+   
+    //efectos de sonido 
+     public void reproducirMusica(int i) {
         musica.colocarArchivo(i);
         musica.reproducir();
         musica.bucle();
@@ -190,21 +175,19 @@ public class PanelJuego extends JPanel implements Runnable{
         
     }
     
-    private int buscarIndiceJugadorMultijugador(String nombreUsuario){
-        int indice = 0;
-        for(JugadorMultijugador j : getJugadoresConectados()){
-            if(j.getNombreUsuario().equals(nombreUsuario))
-                break;
-            indice++;
-        }
-        return indice;
-    } 
-    
-    public void moverJugador(String nombreUsuario, int x, int y){
-        int indice = buscarIndiceJugadorMultijugador(nombreUsuario);
-        this.getJugadoresConectados().get(indice).mundoX = x;
-        this.getJugadoresConectados().get(indice).mundoY = y;
-    }
-    
     
 }
+    //despues veo que hace eso 
+
+   /*
+    public void setIPText(String direccionIP) {
+        this.direccionIP = direccionIP;
+        ipLabel.setText(direccionIP); // Forzar la actualización del panel
+    }
+
+    //Otros metodos
+    public void setupJuego(){
+        aSetter.setObjeto();
+        reproducirMusica(0); // Reproducimos el tema principal
+    }
+    */

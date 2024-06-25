@@ -6,31 +6,39 @@ package Jugador;
 
 import Multijugador.Servidor;
 import Personaje.Personaje;
+import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 
 /**
  *
  * @author carlos
  */
 public class Administrador extends Jugador{
-    private Servidor server; 
+    public Servidor server; 
 
     public Administrador() {
     }
 
-    public Administrador(String id, Personaje personaje,int puerto) throws SocketException {
-        super(id, personaje,puerto);
+    public Administrador(String id, String personaje) {
+        super(id,personaje);
     }
+
+    public Administrador(String id, String personaje, InetAddress ip, int puerto) throws SocketException {
+        super(id, personaje, ip, puerto);
+    }
+    
+    
     
     
     
     //metodos 
-    public void crearServidor(){
-        
+    public void crearServidor() throws UnknownHostException, SocketException{
+        server = new Servidor(InetAddress.getLocalHost(),5000);    
     }
     
-    public void crearPartida(){
-        
+    public void crearPartida() throws SocketException{
+        server.crearPartida();
     }
     
     public void IniciarPartida(){

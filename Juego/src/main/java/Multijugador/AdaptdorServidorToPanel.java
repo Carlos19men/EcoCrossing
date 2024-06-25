@@ -10,10 +10,10 @@ import PanelDeJuego.PanelJuego;
  *
  * @author carlos
  */
-public class AdaptadorServidorPanel {
+public class AdaptdorServidorToPanel {
     private PanelJuego panel; 
 
-    public AdaptadorServidorPanel(PanelJuego panel) {
+    public AdaptdorServidorToPanel(PanelJuego panel) {
         this.panel = panel;
     }
     

@@ -1,5 +1,6 @@
 package PanelDeJuego;
 
+import Jugador.Jugador;
 import Objetos.OBJ_Basura;
 import java.awt.Color;
 import java.awt.Font;
@@ -32,7 +33,7 @@ public class HUD {
     DecimalFormat formatoDecimal= new DecimalFormat("#0.00");
     
     public HUD(PanelJuego panelJuego){
-        this.panelJuego=panelJuego;
+        this.panelJuego = panelJuego;
         arial_40= new Font("Arial", Font.PLAIN, 40);
         arial_80B= new Font("Arial", Font.BOLD, 80);
         OBJ_Basura basura= new OBJ_Basura();
@@ -44,7 +45,7 @@ public class HUD {
         mensajeActivo= true;
     }
     
-    public void dibujar(Graphics2D g2) {
+    public void dibujar(Graphics2D g2, Jugador jugador) {
         if(juegoFinalizado==true) {
             g2.setFont(arial_40);
             g2.setColor(Color.white);
@@ -79,7 +80,7 @@ public class HUD {
             g2.setFont(arial_40);
             g2.setColor(Color.white);
             g2.drawImage(imagenBasura, panelJuego.tamannoRecuadros/2, panelJuego.tamannoRecuadros/2, panelJuego.tamannoRecuadros, panelJuego.tamannoRecuadros, null);
-            g2.drawString("x "+ panelJuego.jugador.cntBasura, 74, 65);
+            //g2.drawString("x "+ jugador.cntBasura, 74, 65);
             
             // TIEMPO
             tiempoJuego += (double)1/60;

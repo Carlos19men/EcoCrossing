@@ -68,7 +68,7 @@ public class VerificarColision {
     public int VerificarObjeto (Entidad entidad, boolean jugador){
         int indice=999;
         
-        for(int i=0; i < panelJuego.obj; i++){
+        for(int i=0; i < panelJuego.obj.length; i++){
             
             if(panelJuego.obj[i] != null){
                 //Obtener la posicion del area solida de la entidad
