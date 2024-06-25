@@ -5,6 +5,9 @@
 package com.mycompany.juego;
 
 import Jugador.Administrador;
+import Jugador.Entidad;
+import Jugador.Jugador;
+import Multijugador.Servidor;
 import java.net.InetAddress;
 
 import java.net.SocketException;
@@ -20,30 +23,35 @@ import java.util.logging.Logger;
 public class Juego {
 
     public static void main(String[] args) {
-        try { 
-            //prueba 
-            Administrador admin = new Administrador("carlos","samuel",InetAddress.getLocalHost(),5000);
-            /*admin.crearServidor();
-            admin.server.AdaptarAdmin(admin);
-            admin.inicializarCoordenadas();
-            admin.valoresPorDefecto();
+        
+        try {
+            //prueba
+            Administrador j1 = new Administrador("Daniel","samuel",InetAddress.getLocalHost(),6000);
+            j1.crearServidor(InetAddress.getLocalHost(),5000);
+            j1.crearPanelJuegoAdministrador();
+            j1.server.AdaptarPanel(j1.panel);
+            //j1.server.iniciarServidor();
+            //j1.server.iniciarPartida();
             
-            admin.server.crearPartida();*/
-            
-            
-            
-            
+            j1.panel.iniciarjuegoThread();
             
             
-            
-            
-            
-            
-            
-           
-            
-        } catch (SocketException | UnknownHostException ex) {
-            System.out.println(ex.getMessage());   //<-----------------------------
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(Juego.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SocketException ex) {
+            Logger.getLogger(Juego.class.getName()).log(Level.SEVERE, null, ex);
         }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+  
     }
 }

@@ -35,8 +35,6 @@ public class Servidor implements ManejadorPaquete,Mensaje, ListaJugadores{
         this.puerto = puerto;
         this.IP = IP;
         
-        //encerrar en una exepcion 
-        this.socket = new DatagramSocket(puerto); 
     }
 
     //set / get 
@@ -143,25 +141,24 @@ public class Servidor implements ManejadorPaquete,Mensaje, ListaJugadores{
     public void crearPartida() throws SocketException{
         //agregamos de primero el administrador a la lista 
         agregar(adaptadorAdmin.traer()); 
-        crearServidor(); 
+        iniciarServidor(); 
         iniciarPartida(); 
         
     }
     
-    public void crearServidor()throws SocketException{
+    public void iniciarServidor()throws SocketException{
         //solicitamos el puerto y la ip
         System.out.println("Servidor creado, puerto: "+puerto+" ip: "+IP.getHostAddress());
         esperarJugadores(0);
-        System.out.println("Jugadores listos");
     }
     
-    public void iniciarPartida(){
+    public void iniciarPartida() throws SocketException{
         partida = true; 
         //Iniciamos la partida 
         adaptadorPanel.iniciarJuego();
         
         //Enviamos un mensaje a cada jugador para que pueden iniciar su partida 
-        notificar(Mensajero.mensaje("La partida a comenzado!")); 
+        notificar(Mensajero.mensaje("La partida ha comenzado!")); 
         
         //Escuchamos a los jugadore en todo momento
         escucharJugadores(); 
@@ -169,10 +166,11 @@ public class Servidor implements ManejadorPaquete,Mensaje, ListaJugadores{
         
     }
 
-    public void escucharJugadores(){
-        DatagramPacket paquete; 
+    public void escucharJugadores() throws SocketException{
+        byte[] buffer = new byte[255]; 
+        DatagramPacket paquete = new DatagramPacket(buffer,buffer.length); 
+        socket = new DatagramSocket(puerto); 
         while(partida){
-            paquete = null; 
             try {
                 //Esperamos las notificaciones del juego 
                 socket.receive(paquete);
@@ -205,6 +203,7 @@ public class Servidor implements ManejadorPaquete,Mensaje, ListaJugadores{
         int cantidad = 0; 
         
         while(cantidad < numeroJugadores){
+            System.out.println("Esperando Jugadores...");
             DatagramPacket paquete = recibirPaquete(); 
             
             String[] datos = desempaquetar(paquete); 

@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.awt.Font;
 import java.awt.event.KeyListener;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class PanelJuego extends JPanel implements Runnable{    
@@ -91,15 +92,31 @@ public class PanelJuego extends JPanel implements Runnable{
         
         //Atributos juego
         administradorRecuadros = new AdministradorRecuadros(this);
-        musica = new Sonido();
+        /*musica = new Sonido();
         efectosSonido = new Sonido();
         verificarC = new VerificarColision(this);
         colocadorObjeto = new ColocadorObjeto(this);
-        hud = new HUD(this);
+        hud = new HUD(this);*/
     }
     
     
     public void iniciarjuegoThread() {
+        //crear frame 
+        JFrame ventana = new JFrame(); 
+        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        ventana.setResizable(false); 
+        ventana.setTitle("Eco corssing: ");
+        
+        //iniciarlizar valores del panel 
+        inicializarValores(); 
+        
+        ventana.add(this); 
+        ventana.pack();
+        
+        ventana.setLocationRelativeTo(null);
+        ventana.setVisible(true);
+        
+        
         juegoThread = new Thread(this);
         juegoThread.start();       
     }

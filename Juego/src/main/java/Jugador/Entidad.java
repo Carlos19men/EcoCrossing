@@ -13,6 +13,13 @@ public class Entidad {
     public int areaSolidaDefaultX, areaSolidaDefaultY;
     public boolean colisionActivada=false;
     public boolean enMovimiento;
+    
+
+    //constructuores 
+    
+
+    public Entidad() {
+    }
 
     public void setSpriteCont(int spriteCont) {
         this.spriteCont = spriteCont;

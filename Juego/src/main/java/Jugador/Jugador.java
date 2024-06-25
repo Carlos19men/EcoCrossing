@@ -47,10 +47,9 @@ public class Jugador extends Entidad implements ManejadorPaquete, Mensaje, Lista
     public PanelJuego panel; 
     
     //atributos para el manejo del mundo del juego
-
-    public int mundoX = 100, mundoY = 100; 
-    public final int pantallaX = (panel.anchoPantalla - panel.tamannoRecuadros) / 2;
-    public final int pantallaY = (panel.largoPantalla - panel.tamannoRecuadros) / 2;
+    public int mundoX, mundoY ; 
+    public int pantallaX;
+    public int pantallaY;
     
     //datos del personaje del jugador
     private ManejadorTeclado teclado; 
@@ -138,13 +137,7 @@ public class Jugador extends Entidad implements ManejadorPaquete, Mensaje, Lista
         this.panel = panel;
     }
 
-    public String getDireccionAnterior() {
-        return direccionAnterior;
-    }
-
-    public void setDireccionAnterior(String direccionAnterior) {
-        this.direccionAnterior = direccionAnterior;
-    }
+    
 
     public String getPersonajeNombre() {
         return personajeNombre;
@@ -246,13 +239,14 @@ public class Jugador extends Entidad implements ManejadorPaquete, Mensaje, Lista
         teclado = new ManejadorTeclado(); 
     }
     
-    //metodos del panel de juego
-    public void crearPanelJuegoAdministrador(Servidor server){
-        panel = new PanelJuego(this,teclado,server); 
-    }
+
     
     public void crearPanelJuegoJugador(){
         panel = new PanelJuego(this,teclado); 
+        mundoX = 100;
+        mundoY = 100; 
+        pantallaX = (panel.anchoPantalla - panel.tamannoRecuadros) / 2;
+        pantallaY = (panel.largoPantalla - panel.tamannoRecuadros) / 2;
     }
     
     
@@ -270,8 +264,6 @@ public class Jugador extends Entidad implements ManejadorPaquete, Mensaje, Lista
         valoresPorDefecto();
         getImagenJugador();
         
-        // Inicializar la dirección anterior con la misma dirección inicial
-        direccionAnterior = direccion;
     }
     
     public void valoresPorDefecto() {
@@ -503,10 +495,7 @@ public class Jugador extends Entidad implements ManejadorPaquete, Mensaje, Lista
                     direccion = "lado2";
                 
                 // Verificar si la dirección ha cambiado antes de enviar el paquete
-                if (!direccion.equals(direccionAnterior)) {
-                    subirAlServidor(Mensajero.mensajeMover(this, direccion)); 
-                    direccionAnterior = direccion;
-                }
+                subirAlServidor(Mensajero.mensajeMover(this, direccion)); 
             }
         }
     }
@@ -538,6 +527,6 @@ public class Jugador extends Entidad implements ManejadorPaquete, Mensaje, Lista
             }    // Agregar más objetos según sea necesario
         }
     }*/
-    
+
 
 }

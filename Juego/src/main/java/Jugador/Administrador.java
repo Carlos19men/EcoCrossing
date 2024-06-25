@@ -5,6 +5,7 @@
 package Jugador;
 
 import Multijugador.Servidor;
+import PanelDeJuego.PanelJuego;
 import Personaje.Personaje;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -33,7 +34,7 @@ public class Administrador extends Jugador{
     
     
     //metodos 
-    public void crearServidor() throws UnknownHostException, SocketException{
+    public void crearServidor(InetAddress ruta, int puerto) throws UnknownHostException, SocketException{
         server = new Servidor(InetAddress.getLocalHost(),5000);    
     }
     
@@ -46,6 +47,16 @@ public class Administrador extends Jugador{
     }
     
     public void finalizarPartida(){
+        
+    }
+    
+    //metodos del panel de juego
+    public void crearPanelJuegoAdministrador(){
+        panel = new PanelJuego(this,super.getTeclado(),server); 
+        mundoX = 100;
+        mundoY = 100; 
+        pantallaX = (panel.anchoPantalla - panel.tamannoRecuadros) / 2;
+        pantallaY = (panel.largoPantalla - panel.tamannoRecuadros) / 2;
         
     }
 }
