@@ -4,7 +4,7 @@
  */
 package Objetos;
 
-import PanelDeJuego.PanelJuego;
+import PanelJuego.PanelJuego;
 
 /**
  *

@@ -7,14 +7,14 @@ package Multijugador;
 import Jugador.Administrador;
 import Jugador.Jugador;
 import Jugador.JugadorFactory;
-import PanelDeJuego.PanelJuego;
+import Juego.Juego;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.util.List; 
-import java.util.ArrayList; 
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,22 +22,22 @@ import java.util.logging.Logger;
  *
  * @author carlos
  */
-public class Servidor implements ManejadorPaquete,Mensaje, ListaJugadores{
-    private static int puerto; 
-    private DatagramSocket socket; 
-    private static InetAddress IP; 
-    private List<Jugador> jugadores = new ArrayList<>(); 
-    private AdaptdorServidorToPanel adaptadorPanel; 
-    private AdaptadorServidorToAdmin adaptadorAdmin; 
-    boolean partida; 
-
+public class Servidor implements Comunicador, ManejadorPaquete{
+    private int puerto; 
+    private InetAddress IP; 
+    private List<Jugador> jugadores = new LinkedList<>(); 
+    boolean partida = false; 
+    
+    //adaptadores 
+    AdaptadorServidorToJuego adaptadorJuego; 
+    
     public Servidor( InetAddress IP,int puerto) throws SocketException {
         this.puerto = puerto;
         this.IP = IP;
         
     }
 
-    //set / get 
+   //set / get
     public int getPuerto() {
         return puerto;
     }
@@ -54,6 +54,7 @@ public class Servidor implements ManejadorPaquete,Mensaje, ListaJugadores{
         this.IP = IP;
     }
 
+
     public List<Jugador> getJugadores() {
         return jugadores;
     }
@@ -62,26 +63,17 @@ public class Servidor implements ManejadorPaquete,Mensaje, ListaJugadores{
         this.jugadores = jugadores;
     }
     
-    
-    
-    //metodos 
-    
-    
-    //metodos basicos 
-    public void agregar(Jugador jugador){
-        jugadores.add(jugador); 
-    }
-    
     public void eliminar(Jugador jugador){
         jugadores.remove(jugador); 
     }    
     
     //metodos de paquete 
-
     @Override
     public void enviarPaquete(DatagramPacket packet) {
         try {
+            DatagramSocket socket = new DatagramSocket(puerto); 
             socket.send(packet);
+            socket.close();
         } catch (SocketException ex) {
             Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);  //recuerda crear exepciones 
         } catch (IOException ex) {
@@ -94,8 +86,10 @@ public class Servidor implements ManejadorPaquete,Mensaje, ListaJugadores{
         byte[] datos = new byte[1024];
         DatagramPacket paquete = new DatagramPacket(datos, datos.length);
         try {
+               DatagramSocket socket = new DatagramSocket(puerto); 
                socket.receive(paquete);
-               System.out.println("Paquete recibido de: " + paquete.getAddress() + ":" + paquete.getPort());
+               System.out.println("Paquete recibido de: " + paquete.getAddress() + " : " + paquete.getPort());
+               socket.close();
                return paquete; 
         } catch (IOException e) {
            //falta crear un exepcion 
@@ -113,49 +107,22 @@ public class Servidor implements ManejadorPaquete,Mensaje, ListaJugadores{
         return String.join(",", datos); 
     }
     
-
-    @Override
-    public void interpretar(DatagramPacket paquete) throws SocketException{
-        String[] datos = desempaquetar(paquete); 
-        String mensaje = empaquetar(datos); 
-        
-        if(datos[0].equalsIgnoreCase("acceder")){
-            //agregamos un nuevo jugador
-            agregar(JugadorFactory.crearJugador(datos,paquete.getAddress(),paquete.getPort())); 
-            //exepcion en caso de alguna falla 
-            
-        }else if(datos[0].equals("mover")){
-            //Un jugador se ha movido, lo buscamos en la lista 
-            int indice = buscarJugador(datos[1]); 
-            
-            if(indice != -1){
-                //El jugador existe, por ende, cambiamos sus coordenadas y notificamos 
-                jugadores.get(indice).mover(Integer.parseInt(datos[2]),Integer.parseInt(datos[3]));
-                notificar(mensaje,indice);   
-            }
-        }
-    }
-    
-    
     //metodos de la partida 
-    public void crearPartida() throws SocketException{
+    public void crearPartida(Administrador admin, int cantidad) throws SocketException{
         //agregamos de primero el administrador a la lista 
-        agregar(adaptadorAdmin.traer()); 
-        iniciarServidor(); 
-        iniciarPartida(); 
-        
+        jugadores.add(admin); 
+        iniciarServidor(cantidad); 
     }
     
-    public void iniciarServidor()throws SocketException{
+    public void iniciarServidor(int cantidad)throws SocketException{
         //solicitamos el puerto y la ip
         System.out.println("Servidor creado, puerto: "+puerto+" ip: "+IP.getHostAddress());
-        esperarJugadores(0);
+        esperarJugadores(cantidad);
     }
     
     public void iniciarPartida() throws SocketException{
-        partida = true; 
         //Iniciamos la partida 
-        adaptadorPanel.iniciarJuego();
+        partida = true; 
         
         //Enviamos un mensaje a cada jugador para que pueden iniciar su partida 
         notificar(Mensajero.mensaje("La partida ha comenzado!")); 
@@ -169,29 +136,32 @@ public class Servidor implements ManejadorPaquete,Mensaje, ListaJugadores{
     public void escucharJugadores() throws SocketException{
         byte[] buffer = new byte[255]; 
         DatagramPacket paquete = new DatagramPacket(buffer,buffer.length); 
-        socket = new DatagramSocket(puerto); 
-        while(partida){
-            try {
-                //Esperamos las notificaciones del juego 
-                socket.receive(paquete);
+       
+        try {
+            DatagramSocket socket = new DatagramSocket(puerto); 
+            while(partida){
                 
-                //Recibimos el paquete y lo desempaquetamos 
+                //Esperamos las notificaciones de los jugadores
+                socket.receive(paquete);
+
+                //Recibimos el paquete y lo desempaquetamos (solo para acegurarnos de que llego)
                 String[] datos = desempaquetar(paquete); 
                 System.out.println("Paquete recibido! tipo: "+datos[0]);
-                
-                
-                //interpretamos el paquete
-                interpretar(paquete); 
-                
-                
-            } catch (IOException ex) {
-                Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+
+                //notificamos a los jugadores el paquete 
+                notificar(empaquetar(datos)); 
             }
+            
+            //siempre cerrar el socket
+            socket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
             
             
             //Simultaneamente se esta ejecutando el juego por el hilo de IniciarJuegoThread
             //Este ciclo continuará hasta que el admin decida finalizar el juego: partida = false
-        }
+        
     }
     
     public void finalizarPartida(){
@@ -206,15 +176,19 @@ public class Servidor implements ManejadorPaquete,Mensaje, ListaJugadores{
             System.out.println("Esperando Jugadores...");
             DatagramPacket paquete = recibirPaquete(); 
             
+            System.out.println("ruta del paquete:"+paquete.getAddress());
+            System.out.println("Puerto: "+paquete.getPort());
             String[] datos = desempaquetar(paquete); 
             
             //si el paquete es de tipo acceder creamos el jugador y lo agregamos a la lista
-            if(datos[0].equals("acceder")){
-                agregar(JugadorFactory.crearJugador(datos,paquete.getAddress(),paquete.getPort()));       
+            if(datos[0].equals("conectar")){
+                
+                //creamos un jugador a nivel de conexcion
+                jugadores.add(JugadorFactory.crearJugador(datos[1],datos[2],paquete.getAddress(),paquete.getPort()));
                 cantidad++; 
                 
                 //notficamos a los jugadores que se ha conectado un jugador
-                notificar(Mensajero.mensaje("El jugador: "+datos[0]+" se ha conectado!")); 
+                notificar(Mensajero.mensaje("El jugador: "+datos[1]+" se ha conectado!")); 
             }
         }
         
@@ -224,55 +198,40 @@ public class Servidor implements ManejadorPaquete,Mensaje, ListaJugadores{
     //metodos de notificación
     public void notificar(String mensaje){
         for(Jugador jugador: jugadores){
-            enviarPaquete(PaqueteFactory.crear(mensaje, jugador.getIp(), jugador.getPuerto())); 
+            if(jugador instanceof Jugador){
+                enviarPaquete(PaqueteFactory.crear(mensaje, jugador.getIp(), jugador.getPuerto()));  
+            }
         }
     }
     
-    public void notificar(String mensaje, int indiceOmitir){
+    public void notificar(String mensaje, InetAddress rutaOmitir){
 
         for(int i = 0; i < jugadores.size(); i++){
-            if(i != indiceOmitir){
-                enviarPaquete(PaqueteFactory.crear(mensaje, jugadores.get(i).getIp(), jugadores.get(i).getPuerto())); 
+            if(jugadores.get(i).getId().equals(rutaOmitir)){ 
+                enviarPaquete(PaqueteFactory.crear(mensaje, jugadores.get(i).getIp(), jugadores.get(i).getPuerto()));
+            } else {
             }
         }
     }
     
     
-    //metodos para los jugadores 
-    @Override
-    public int buscarJugador(String nombre){
-        for(int i = 0; i < jugadores.size(); i++){
-            if(jugadores.get(i).getId().equalsIgnoreCase(nombre)){
-                return i; 
-            }
-        }
-        return -1; 
-    }
-
-    public void enviarLista(){
-        //tengo una lista de jugadores 
+    //metodos para los jugadores     
+    public void enviarJugadores(){
+        //tenemos la lista de jugadores y se la tenemos que enviar a los demas jugadores
+        String lista = "lista,"; 
         
-        //enviaresmos sublistas de jugadores a cada uno de los jugadores 
-        for(int i = 0; i < jugadores.size(); i++){
-            for(int j = 0; j < jugadores.size(); j++){
-                if(j != i){
-                    //creamos el mensaje con la informacíon del jugador 
-                    String mensaje = Mensajero.mensajeConectar(jugadores.get(i)); 
-                   
-                    //enviamos el mensaje a los jugadores 
-                    enviarPaquete(PaqueteFactory.crear(mensaje,jugadores.get(j).getIp(),jugadores.get(j).getPuerto())); 
-                }
-            }
+        for(Jugador jugador: jugadores){
+            lista += jugador.getId(); 
         }
+        
+        //enviamos la lista completa a los jugadores 
+        notificar(lista); 
     }
     
     //metodos de los adaptadores 
-    public void AdaptarPanel(PanelJuego panel){
-        adaptadorPanel = new AdaptdorServidorToPanel(panel); 
-    }
-    
-    public void AdaptarAdmin(Administrador admin){
-        adaptadorAdmin = new AdaptadorServidorToAdmin(admin); 
+    public void AdapatarJuego(Juego juego){
+        adaptadorJuego = new AdaptadorServidorToJuego(juego); 
+
     }
 
 

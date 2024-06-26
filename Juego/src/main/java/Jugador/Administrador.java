@@ -5,7 +5,7 @@
 package Jugador;
 
 import Multijugador.Servidor;
-import PanelDeJuego.PanelJuego;
+import PanelJuego.PanelJuego;
 import Personaje.Personaje;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -21,12 +21,14 @@ public class Administrador extends Jugador{
     public Administrador() {
     }
 
-    public Administrador(String id, String personaje) {
-        super(id,personaje);
+    public Administrador(String id,String nombrePersonaje) {
+        super(id,nombrePersonaje);
     }
 
-    public Administrador(String id, String personaje, InetAddress ip, int puerto) throws SocketException {
-        super(id, personaje, ip, puerto);
+    //la ip para el administrador siempre tiene que ser local 
+    
+    public Administrador(String id, String nombrePersonaje, InetAddress ip, int puerto) throws SocketException {
+        super(id, nombrePersonaje, ip, puerto);
     }
     
     
@@ -35,11 +37,11 @@ public class Administrador extends Jugador{
     
     //metodos 
     public void crearServidor(InetAddress ruta, int puerto) throws UnknownHostException, SocketException{
-        server = new Servidor(InetAddress.getLocalHost(),5000);    
+        server = new Servidor(ruta,puerto);    
     }
     
-    public void crearPartida() throws SocketException{
-        server.crearPartida();
+    public void crearPartida(int cantidad) throws SocketException{
+        server.crearPartida(this, cantidad);
     }
     
     public void IniciarPartida(){
@@ -50,13 +52,14 @@ public class Administrador extends Jugador{
         
     }
     
+
+    
     //metodos del panel de juego
-    public void crearPanelJuegoAdministrador(){
-        panel = new PanelJuego(this,super.getTeclado(),server); 
-        mundoX = 100;
-        mundoY = 100; 
-        pantallaX = (panel.anchoPantalla - panel.tamannoRecuadros) / 2;
-        pantallaY = (panel.largoPantalla - panel.tamannoRecuadros) / 2;
+
+    public void configurarJuego(){
+        super.teclado = new ManejadorTeclado(); 
+        super.panel = new PanelJuego(this,teclado,server); 
         
+        super.valoresPorDefecto();
     }
 }

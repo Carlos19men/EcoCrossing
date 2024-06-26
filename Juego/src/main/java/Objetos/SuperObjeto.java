@@ -5,7 +5,7 @@
 package Objetos;
 
 import Jugador.Jugador;
-import PanelDeJuego.PanelJuego; 
+import PanelJuego.PanelJuego; 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;

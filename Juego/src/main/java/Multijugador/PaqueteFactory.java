@@ -19,6 +19,4 @@ public class PaqueteFactory {
     public static DatagramPacket crear(String mensaje, InetAddress ruta, int port){
         return new DatagramPacket(mensaje.getBytes(), mensaje.getBytes().length, ruta, port); 
     }
-    
-    
 }

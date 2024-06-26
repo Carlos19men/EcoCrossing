@@ -22,15 +22,11 @@ public class JugadorFactory {
         return new Jugador(); 
     }
     
-    public static Jugador crearJugador(String id, String personaje,InetAddress ip, int puerto) throws SocketException{
-        return new Jugador(id,personaje,ip,puerto); 
+    public static Jugador crearJugador(String id,String nombrePersonaje,InetAddress ip, int puerto) throws SocketException{
+        return new Jugador(id,nombrePersonaje,ip,puerto); 
     }
     
-    public static Jugador crearJugador(String[] datos,InetAddress ip,int puerto) throws SocketException{
-        return new Jugador(datos[1],datos[2],ip,puerto); 
-    }
-    
-        public static Jugador crearJugador(String id, String personaje){
-        return new Jugador(id,personaje); 
+    public static Jugador crearJugador(String id,String nombrePersonaje){
+        return new Jugador(id,nombrePersonaje); 
     }
 }

@@ -5,15 +5,13 @@
 package Multijugador;
 
 import java.net.DatagramPacket;
-import java.net.InetAddress;
 
 /**
  *
  * @author carlos
  */
 public interface ManejadorPaquete {
-    public void enviarPaquete(DatagramPacket packet);
-    public DatagramPacket recibirPaquete(); 
+ 
     public String[] desempaquetar(DatagramPacket paquete); 
     public String empaquetar(String[] datos); 
 }

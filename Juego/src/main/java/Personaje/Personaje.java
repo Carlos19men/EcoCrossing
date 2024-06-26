@@ -14,6 +14,12 @@ public class Personaje  implements CargarSprite{
     public Personaje() {
     }
 
+    public Personaje(String sprite) {
+        this.sprite = sprite;
+    }
+    
+    
+
     public String getSprite() {
         return sprite;
     }

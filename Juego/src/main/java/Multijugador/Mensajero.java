@@ -19,15 +19,15 @@ public class Mensajero {
     //metodos
     public static String mensajeConectar(Jugador jugador){
         return "conectar,"+jugador.getId()+","+
-                         +jugador.getMundoX()+","
-                         +jugador.getMundoY()+","
+                         +jugador.mundoX+","
+                         +jugador.mundoY+","
                          +jugador.getPersonaje().getSprite(); 
     }
     
     public static String mensajeMover(Jugador jugador,String direccion){
         return "mover,"+jugador.getId()+","
-                +jugador.getMundoX()+","
-                +jugador.getMundoY()+","
+                +jugador.mundoX+","
+                +jugador.mundoY+","
                 +jugador.getPersonaje().getSprite()+","
                 +direccion; 
     }

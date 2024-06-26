@@ -14,7 +14,7 @@ public class Entidad {
     public boolean colisionActivada=false;
     public boolean enMovimiento;
     
-
+   
     //constructuores 
     
 
@@ -52,7 +52,4 @@ public class Entidad {
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
-    
-    
-    
 }
