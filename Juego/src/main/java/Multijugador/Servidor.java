@@ -29,7 +29,8 @@ public class Servidor implements Comunicador, ManejadorPaquete{
     boolean partida = false; 
     
     //adaptadores 
-    AdaptadorServidorToJuego adaptadorJuego; 
+    public AdaptadorServidorToJuego adaptadorJuego;
+    public AdapterServerToAdmin adapterAdmin; 
     
     public Servidor( InetAddress IP,int puerto) throws SocketException {
         this.puerto = puerto;
@@ -106,26 +107,27 @@ public class Servidor implements Comunicador, ManejadorPaquete{
     public String empaquetar(String[] datos) {
         return String.join(",", datos); 
     }
-    
-    //metodos de la partida 
-    public void crearPartida(Administrador admin, int cantidad) throws SocketException{
-        //agregamos de primero el administrador a la lista 
-        jugadores.add(admin); 
-        iniciarServidor(cantidad); 
-    }
-    
-    public void iniciarServidor(int cantidad)throws SocketException{
+        
+    public void iniciarServidor(Administrador admin, int cantidad)throws SocketException{
         //solicitamos el puerto y la ip
+        jugadores.add(admin); 
+
         System.out.println("Servidor creado, puerto: "+puerto+" ip: "+IP.getHostAddress());
-        esperarJugadores(cantidad);
+        
+        esperarJugadores(cantidad); 
+        
     }
     
     public void iniciarPartida() throws SocketException{
         //Iniciamos la partida 
         partida = true; 
         
+        
+        //creamos el juego 
+        
+        
         //Enviamos un mensaje a cada jugador para que pueden iniciar su partida 
-        notificar(Mensajero.mensaje("La partida ha comenzado!")); 
+        notificar(Mensajero.mensaje("iniciar,hola")); 
         
         //Escuchamos a los jugadore en todo momento
         escucharJugadores(); 
@@ -176,8 +178,7 @@ public class Servidor implements Comunicador, ManejadorPaquete{
             System.out.println("Esperando Jugadores...");
             DatagramPacket paquete = recibirPaquete(); 
             
-            System.out.println("ruta del paquete:"+paquete.getAddress());
-            System.out.println("Puerto: "+paquete.getPort());
+           
             String[] datos = desempaquetar(paquete); 
             
             //si el paquete es de tipo acceder creamos el jugador y lo agregamos a la lista
@@ -193,7 +194,16 @@ public class Servidor implements Comunicador, ManejadorPaquete{
         }
         
         System.out.println("Jugadores listos");
+        mostrarLista(); 
+        
     } 
+    
+    public void mostrarLista(){
+        int i = 1; 
+        for(Jugador jugador: jugadores){
+            System.out.println("Jugador "+i+": "+jugador.getId());
+        }
+    }
     
     //metodos de notificación
     public void notificar(String mensaje){
@@ -232,6 +242,15 @@ public class Servidor implements Comunicador, ManejadorPaquete{
     public void AdapatarJuego(Juego juego){
         adaptadorJuego = new AdaptadorServidorToJuego(juego); 
 
+    }
+    
+    public void AdaptarAdmin(Administrador admin){
+        adapterAdmin = new AdapterServerToAdmin(admin); 
+    }
+
+    @Override
+    public String[] limpiar(String[] datos) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 

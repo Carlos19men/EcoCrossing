@@ -4,6 +4,8 @@
  */
 package Jugador;
 
+import Juego.AdministradorObjetos;
+import Juego.Juego;
 import Multijugador.Comunicador;
 import PanelJuego.PanelJuego;
 import Multijugador.ManejadorPaquete;
@@ -369,27 +371,24 @@ public class Jugador extends Entidad implements ManejadorPaquete, Comunicador{
         
         System.out.println(empaquetar(datos));
         
-        //recibimos la lista de jugadores conectados y se la enviamos al Juego
-        paquete = recibirPaquete(); 
         
-        System.out.println("Se ha recibido la lista de jugadores: ");
+        //ahora esperamos que el Administrador empice la partida 
+        paquete = recibirPaquete(); 
+        datos = limpiar(datos); 
+        
         datos = desempaquetar(paquete); 
-        System.out.println(empaquetar(datos));
         
-        
-        
-        //ahora esperamos a que el administrador incie la partida
-        paquete = recibirPaquete(); 
-        
-        System.out.println(empaquetar(datos));
-
-        
-        System.out.println();
-        
-        //iniciamos el juego
-        panel.iniciarjuegoThread();
-        
-        //escuchamos al servidor
+        if(datos[1].equalsIgnoreCase("iniciar")){
+            //configuramos el juego y el panel 
+            Juego juego = new Juego(new AdministradorObjetos(),this); 
+            
+            //le pasamos el panel de este jugador
+            juego.setPanel(panel);
+            
+            //inicializamos el panel y los valores por defecto 
+            configurar(); 
+            panel.inicializarValores();
+        }
         
         
     }
@@ -492,5 +491,13 @@ public class Jugador extends Entidad implements ManejadorPaquete, Comunicador{
                 spriteNum = 2;
             spriteCont = 0;
         }
+    }
+
+    @Override
+    public String[] limpiar(String[] datos) {
+        for(int i = 0; i < datos.length; i++){
+            datos[i] = null; 
+        }
+        return datos; 
     }
 }

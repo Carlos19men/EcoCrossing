@@ -14,4 +14,5 @@ public interface ManejadorPaquete {
  
     public String[] desempaquetar(DatagramPacket paquete); 
     public String empaquetar(String[] datos); 
+    public String[] limpiar(String[] datos); 
 }

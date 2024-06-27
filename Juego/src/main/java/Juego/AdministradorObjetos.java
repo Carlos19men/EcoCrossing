@@ -6,6 +6,8 @@ package Juego;
 
 import Jugador.Jugador;
 import Objetos.SuperObjeto;
+import PanelJuego.AdaptadorDeRecursos;
+import PanelJuego.PanelJuego;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import java.util.List;
 public class AdministradorObjetos {
     public List<Jugador> jugadores = new ArrayList<>();
     public List<SuperObjeto> objetosMapa = new ArrayList<>(); 
+    public AdaptadorDeRecursos adapterPanel; 
 
     //constructores 
 
@@ -42,6 +45,10 @@ public class AdministradorObjetos {
     
     public void addJugador(Jugador jugador){
         jugadores.add(jugador); 
+    }
+    
+    public void AdaptaPanel(PanelJuego panel){
+        adapterPanel = new AdaptadorDeRecursos(panel); 
     }
     
 }

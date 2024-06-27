@@ -45,6 +45,10 @@ public class Juego implements ManejadorPaquete{
         this.panel = panel;
     }
     
+    public void configurar(){
+        
+    }
+    
     
     //metodos 
     public void inicarJuego(){
@@ -107,4 +111,14 @@ public class Juego implements ManejadorPaquete{
     public String empaquetar(String[] datos) {
         return String.join(",", datos); 
     }
+
+    @Override
+    public String[] limpiar(String[] datos) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    public void inicializarObjetos(){
+        
+    }
+    
 }

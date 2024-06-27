@@ -9,5 +9,11 @@ package PanelJuego;
  * @author carlos
  */
 public class AdaptadorDeRecursos {
+    private PanelJuego panel; 
+
+    public AdaptadorDeRecursos(PanelJuego panel) {
+        this.panel = panel;
+    }
+    
     
 }

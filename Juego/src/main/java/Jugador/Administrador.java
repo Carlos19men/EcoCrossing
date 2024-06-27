@@ -4,6 +4,8 @@
  */
 package Jugador;
 
+import Juego.AdministradorObjetos;
+import Juego.Juego;
 import Multijugador.Servidor;
 import PanelJuego.PanelJuego;
 import Personaje.Personaje;
@@ -40,8 +42,20 @@ public class Administrador extends Jugador{
         server = new Servidor(ruta,puerto);    
     }
     
-    public void crearPartida(int cantidad) throws SocketException{
-        server.crearPartida(this, cantidad);
+    public void crearPartida() throws SocketException{
+        Juego juego = new Juego(new AdministradorObjetos(),this);
+        super.configurar();
+        
+        panel.inicializarValores();
+        juego.setPanel(panel);
+
+        //Inicializamos los objetos del juego
+        
+        //Iniciamos el juego   // acomodar esto si el juego tiene al panel por ende tambien tiene al juagor 
+        juego.inicarJuego();
+        
+        //la funcion escuchar servidor tambien la puede aplicar el administrador
+        
     }
     
     public void IniciarPartida(){
