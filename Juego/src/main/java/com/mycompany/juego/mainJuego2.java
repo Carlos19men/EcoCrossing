@@ -27,15 +27,6 @@ public class mainJuego2 {
     public static void main(String[] args) {
         
         
-        try { 
-            InetAddress ruta = InetAddress.getLocalHost(); 
-            Jugador j1 = JugadorFactory.crearJugador("ignacio","samuel",ruta,5500);
-            
-            j1.conectarse(6000,ruta);
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(mainJuego2.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SocketException ex) {
-            Logger.getLogger(mainJuego2.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }
 }

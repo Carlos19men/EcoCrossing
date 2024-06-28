@@ -28,10 +28,11 @@ public class Administrador extends Jugador{
     }
 
     //la ip para el administrador siempre tiene que ser local 
-    
-    public Administrador(String id, String nombrePersonaje, InetAddress ip, int puerto) throws SocketException {
-        super(id, nombrePersonaje, ip, puerto);
+
+    public Administrador(String id, String nomprePersonaje, int mundoX, int mundoY, InetAddress ip, int puerto) throws SocketException {
+        super(id, nomprePersonaje, mundoX, mundoY, ip, puerto);
     }
+    
     
     
     

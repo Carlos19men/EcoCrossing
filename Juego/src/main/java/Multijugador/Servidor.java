@@ -190,7 +190,9 @@ public class Servidor implements Comunicador, ManejadorPaquete{
             if(datos[0].equals("conectar")){
                 
                 //creamos un jugador a nivel de conexcion
-                jugadores.add(JugadorFactory.crearJugador(datos[1],datos[2],paquete.getAddress(),paquete.getPort()));
+                int x = Integer.parseInt(datos[2]); 
+                int y = Integer.parseInt(datos[3]); 
+                jugadores.add(JugadorFactory.crearJugador(datos[1],datos[2],x,y,paquete.getAddress(),paquete.getPort()));
                 cantidad++; 
                 
                 //notficamos a los jugadores que se ha conectado un jugador

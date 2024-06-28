@@ -124,7 +124,7 @@ public class PanelJugador extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             // TODO add your handling code here:
-            jugador = JugadorFactory.crearJugador("Maria","Samuel", InetAddress.getLocalHost(),5025);
+            jugador = JugadorFactory.crearJugador("Maria","Samuel",100,100, InetAddress.getLocalHost(),5025);
         } catch (UnknownHostException | SocketException ex) {
             Logger.getLogger(PanelJugador.class.getName()).log(Level.SEVERE, null, ex);
         }

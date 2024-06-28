@@ -144,7 +144,7 @@ public class PanelJuego extends JPanel implements Runnable{
            
             if(delta>=1){
                 actualizar();
-                repaint(); 
+                repaint();  
                 delta--;
             }         
         }        

@@ -62,14 +62,13 @@ public class Jugador extends Entidad implements ManejadorPaquete, Comunicador{
     public Jugador() {
     }
 
+    //constructor
     public Jugador(String id, String nombrePersonaje,InetAddress ip, int puerto) throws SocketException {
         this.id = id;
         this.nombrePersonaje = nombrePersonaje; 
         this.personaje = new Personaje(nombrePersonaje);
         this.ip = ip; 
         this.puerto = puerto; 
-        
-        //configuramos al jugador
     }
     
     //jugadores a nivel de lista
@@ -79,6 +78,7 @@ public class Jugador extends Entidad implements ManejadorPaquete, Comunicador{
         this.personaje = new Personaje(nombrePersonaje);
     }
     
+    //constructor para jugadores de la lista 
     public Jugador(String id, String nomprePersonaje, int mundoX, int mundoY, InetAddress ip, int puerto) throws SocketException{
         this.id = id;
         this.nombrePersonaje = nombrePersonaje; 
@@ -269,10 +269,7 @@ public class Jugador extends Entidad implements ManejadorPaquete, Comunicador{
         
         //cargamos las imagenes del jugador 
         setImagenJugador();
-        
-        //valores del jugador 
-        mundoX = 100;
-        mundoY = 100; 
+     
     }
     
     
@@ -403,30 +400,31 @@ public class Jugador extends Entidad implements ManejadorPaquete, Comunicador{
         }
     }
     
-    public void escucharServidor(){
+ public void escucharServidor() {
         try {
-            DatagramSocket socket = new DatagramSocket(puerto);
+            DatagramSocket socket = new DatagramSocket(puerto);  
+
             DatagramPacket paquete;
-            
-            while(true){
-                paquete = null;
-                try {
-                    
-                    //esperamos un paquete del servidor
-                    socket.receive(paquete);
-                    
-                    String[] datos = desempaquetar(paquete);
-                    
-                    System.out.println("Paquete recibido: tipo: "+datos[0]);
-                    
-                } catch (IOException ex) {
-                    Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
-                }
+
+            while (true) {
+                byte[] buffer = new byte[1024]; 
+                paquete = new DatagramPacket(buffer, buffer.length); 
+
+                // Esperamos un paquete del servidor
+                socket.receive(paquete);
+
+                String[] datos = desempaquetar(paquete);
+
+                System.out.println("Paquete recibido: tipo: " + datos[0]);
             }
         } catch (SocketException ex) {
             Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+
     
 
 

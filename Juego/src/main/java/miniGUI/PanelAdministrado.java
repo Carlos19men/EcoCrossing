@@ -128,7 +128,7 @@ public class PanelAdministrado extends javax.swing.JFrame {
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         try {
             // TODO add your handling code here:
-            admin.server.iniciarServidor(admin, 1);  
+            admin.server.iniciarServidor(admin, 0);  
         } catch (SocketException ex) {
             Logger.getLogger(PanelAdministrado.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -143,7 +143,7 @@ public class PanelAdministrado extends javax.swing.JFrame {
         try {
             try {
                 // TODO add your handling code here:
-                admin = new Administrador("Ignacio","samuel",InetAddress.getLocalHost(),5000);
+                admin = new Administrador("Ignacio","samuel",200,200,InetAddress.getLocalHost(),5000);
                 admin.crearServidor(InetAddress.getLocalHost(), 6000);
                 admin.server.AdaptarAdmin(admin);
             } catch (UnknownHostException ex) {
@@ -215,19 +215,7 @@ public class PanelAdministrado extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new PanelAdministrado().setVisible(true);
-                try { 
-            
-            
-                    Administrador admin = new Administrador("carlos","samuel",InetAddress.getLocalHost(),6001);
-
-
-                } catch (UnknownHostException | SocketException ex) {
-                    Logger.getLogger(mainJuego.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-
-                
+                new PanelAdministrado().setVisible(true);                
                 
             }
         });
