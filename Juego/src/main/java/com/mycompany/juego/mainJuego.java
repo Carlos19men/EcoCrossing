@@ -16,6 +16,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import miniGUI.PanelAdministrado;
 
 /**
  *
@@ -25,21 +26,9 @@ import java.util.logging.Logger;
 public class mainJuego {
 
     public static void main(String[] args) {        
-       try { 
-            
-            
-            Administrador admin = new Administrador("carlos","samuel",InetAddress.getLocalHost(),6001);
-            
-            //creamos el servidor
-            admin.crearServidor(InetAddress.getLocalHost(), 6000);
-            
-            admin.crearPartida(1);
-            
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(mainJuego.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SocketException ex) {
-            Logger.getLogger(mainJuego.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        PanelAdministrado panel = new PanelAdministrado(); 
+        
+        panel.saludar();
         
     }
     

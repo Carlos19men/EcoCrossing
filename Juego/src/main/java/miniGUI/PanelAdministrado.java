@@ -7,6 +7,8 @@ package miniGUI;
 import Juego.AdministradorObjetos;
 import Juego.Juego;
 import Jugador.Administrador;
+import Multijugador.Mensajero;
+import PanelJuego.PanelJuego;
 import com.mycompany.juego.mainJuego;
 import java.net.InetAddress;
 import java.net.SocketException;
@@ -132,7 +134,11 @@ public class PanelAdministrado extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jToggleButton1ActionPerformed
-
+    
+    public void saludar(){
+        System.out.println("Saludar!");
+    }
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             try {
@@ -151,14 +157,29 @@ public class PanelAdministrado extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        try {
-            //creamos el juego
-            admin.crearPartida();
-            
-            
-        } catch (SocketException ex) {
-            Logger.getLogger(PanelAdministrado.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //creamos el juego
+        
+        //notificamos a los jugadores que preparen su juego 
+        admin.server.notificar(Mensajero.mensaje("Preparen su juego"));
+        
+        Juego juego = new Juego(new AdministradorObjetos(), admin);
+        juego.panel = new PanelJuego(); 
+        admin.configurar(juego.panel);
+        
+        //configuramos el juego 
+        juego.inicializarObjetos();
+        
+        //preparamos el panel 
+        juego.panel.inicializarValores();
+        
+        //iniciamos el juego
+        admin.server.notificar(Mensajero.mensaje("Iniciar Juego!"));
+        
+        //aquí supuestamente iba el adaptador
+        
+        juego.iniciarJuego();
+        
+        
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -211,7 +232,8 @@ public class PanelAdministrado extends javax.swing.JFrame {
             }
         });
     }
-
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

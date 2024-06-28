@@ -40,21 +40,11 @@ public class Administrador extends Jugador{
     //metodos 
     public void crearServidor(InetAddress ruta, int puerto) throws UnknownHostException, SocketException{
         server = new Servidor(ruta,puerto);    
+        puertoServer = puerto; 
+        ipServer = ruta; 
     }
     
     public void crearPartida() throws SocketException{
-        Juego juego = new Juego(new AdministradorObjetos(),this);
-        super.configurar();
-        
-        panel.inicializarValores();
-        juego.setPanel(panel);
-
-        //Inicializamos los objetos del juego
-        
-        //Iniciamos el juego   // acomodar esto si el juego tiene al panel por ende tambien tiene al juagor 
-        juego.inicarJuego();
-        
-        //la funcion escuchar servidor tambien la puede aplicar el administrador
         
     }
     
@@ -69,11 +59,5 @@ public class Administrador extends Jugador{
 
     
     //metodos del panel de juego
-
-    public void configurarJuego(){
-        super.teclado = new ManejadorTeclado(); 
-        super.panel = new PanelJuego(this,teclado,server); 
-        
-        super.valoresPorDefecto();
-    }
+    
 }

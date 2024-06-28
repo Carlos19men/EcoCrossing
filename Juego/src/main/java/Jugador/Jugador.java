@@ -171,8 +171,7 @@ public class Jugador extends Entidad implements ManejadorPaquete, Comunicador{
     
     
     
-    //metodos 
-
+    //metodos
     @Override
     public DatagramPacket recibirPaquete() {
         try {
@@ -223,15 +222,14 @@ public class Jugador extends Entidad implements ManejadorPaquete, Comunicador{
         return String.join(",", datos); 
     }
     
-    public void configurar(){
-        teclado = new ManejadorTeclado(); 
-        panel = new PanelJuego(this,teclado); 
+    public void configurar(PanelJuego panel){
+        teclado = new ManejadorTeclado();  
+        this.panel = panel; 
+        panel.setJugador(this);
+        this.panel.agregarTeclado(teclado);
+                
         
         
-        valoresPorDefecto(); 
-    }
-    
-    public void valoresPorDefecto(){
         //Para esta función primero se tiene que crear el teclado y el panel 
         
         //valores de la pantalla 
@@ -253,6 +251,8 @@ public class Jugador extends Entidad implements ManejadorPaquete, Comunicador{
         areaSolidaDefaultY=areaSolida.y;
         areaSolida.width=32;
         areaSolida.height=32;
+        
+        //cargamos las imagenes del jugador 
         setImagenJugador();
         
         //valores del jugador 
@@ -260,8 +260,6 @@ public class Jugador extends Entidad implements ManejadorPaquete, Comunicador{
         mundoY = 100; 
     }
     
-   //valores por defecto 
-
     
     
     //metodos de manipulacción de lo sprite
@@ -369,28 +367,25 @@ public class Jugador extends Entidad implements ManejadorPaquete, Comunicador{
         //Mostramos el mensaje
         String[] datos = desempaquetar(paquete); 
         
-        System.out.println(empaquetar(datos));
+        System.out.println(empaquetar(datos));        
+    }
+    
+    public void jugar(){
+        //en este punto ya estamos conectados al servidor 
+        
+        //vamos a recibi el paquete para inciar la partida 
+        
+        //configuramos el panel 
         
         
-        //ahora esperamos que el Administrador empice la partida 
-        paquete = recibirPaquete(); 
-        datos = limpiar(datos); 
+        DatagramPacket paquete = recibirPaquete(); 
         
-        datos = desempaquetar(paquete); 
+        String[] datos = desempaquetar(paquete); 
         
-        if(datos[1].equalsIgnoreCase("iniciar")){
-            //configuramos el juego y el panel 
-            Juego juego = new Juego(new AdministradorObjetos(),this); 
-            
-            //le pasamos el panel de este jugador
-            juego.setPanel(panel);
-            
-            //inicializamos el panel y los valores por defecto 
-            configurar(); 
-            panel.inicializarValores();
+        //verificamos el paquete 
+        if(datos[1].equalsIgnoreCase("jugar")){
+            //iniciamos 
         }
-        
-        
     }
     
     public void escucharServidor(){

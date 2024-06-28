@@ -4,8 +4,11 @@
  */
 package miniGUI;
 
+import Juego.AdministradorObjetos;
+import Juego.Juego;
 import Jugador.Jugador;
 import Jugador.JugadorFactory;
+import PanelJuego.PanelJuego;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -93,6 +96,25 @@ public class PanelJugador extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             jugador.conectarse(6000, InetAddress.getLocalHost());
+            
+            //creamos el juego 
+            Juego juego = new Juego(new AdministradorObjetos(), jugador); 
+            juego.panel = new PanelJuego(); 
+            jugador.configurar(juego.panel);
+            
+            //configuramos el juego 
+            juego.inicializarObjetos();
+            
+            //preparamos el panel 
+            juego.panel.inicializarValores();
+            
+            //esperamos la señal del juego
+            DatagramPacket paquete = recibirPaquete(); 
+            
+            //iniciamos el juego 
+            juego.iniciarJuego();
+            
+            
         } catch (UnknownHostException ex) {
             Logger.getLogger(PanelJugador.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -101,7 +123,7 @@ public class PanelJugador extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             // TODO add your handling code here:
-            jugador = JugadorFactory.crearJugador("Carlos","Samuel", InetAddress.getLocalHost(),5020);
+            jugador = JugadorFactory.crearJugador("Maria","Samuel", InetAddress.getLocalHost(),5025);
         } catch (UnknownHostException | SocketException ex) {
             Logger.getLogger(PanelJugador.class.getName()).log(Level.SEVERE, null, ex);
         }

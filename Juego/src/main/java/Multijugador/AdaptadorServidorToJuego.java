@@ -28,6 +28,6 @@ public class AdaptadorServidorToJuego {
     
     //metodos 
     public void iniciarJuego(){
-        juego.inicarJuego();
+        juego.iniciarJuego();
     }
 }

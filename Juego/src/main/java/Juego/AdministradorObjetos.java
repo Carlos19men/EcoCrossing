@@ -43,12 +43,17 @@ public class AdministradorObjetos {
         this.objetosMapa = objetosMapa;
     }
     
+    //metodos 
     public void addJugador(Jugador jugador){
         jugadores.add(jugador); 
     }
     
     public void AdaptaPanel(PanelJuego panel){
         adapterPanel = new AdaptadorDeRecursos(panel); 
+    }
+    
+    public void inicializarObjetos(){
+        
     }
     
 }

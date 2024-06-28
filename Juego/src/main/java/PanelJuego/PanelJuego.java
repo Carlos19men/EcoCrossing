@@ -53,24 +53,28 @@ public class PanelJuego extends JPanel implements Runnable{
     
     //Atributos multijugador
     public JLabel ipLabel;
-    private String direccionIP; 
     
     
     // Constructor: Jugador administrador
-    public PanelJuego(Jugador jugador, ManejadorTeclado teclado, Servidor server) {
-        this.jugador = jugador; 
-        this.addKeyListener(teclado); 
+    public PanelJuego(){
+    }
+
+    // set / get
+
+
+    public Jugador getJugador() {
+        return jugador;
+    }
+
+    public void setJugador(Jugador jugador) {
+        this.jugador = jugador;
     }
     
-    //Constructor: Jugador
-
-    public PanelJuego(Jugador jugador, ManejadorTeclado teclado) {
-        this.jugador = jugador; 
-        this.addKeyListener(teclado); 
+    public void agregarTeclado(ManejadorTeclado teclado){
+        this.addKeyListener(teclado);
     }
-    
 
-    public void inicializarValores(){
+    public void inicializarValores() {
         //Aspecto de la pantalla
         this.setPreferredSize(new Dimension(anchoPantalla, largoPantalla));
         this.setBackground(Color.BLACK);
@@ -100,7 +104,6 @@ public class PanelJuego extends JPanel implements Runnable{
         efectosSonido = new Sonido();
         verificarC = new VerificarColision(this);
         colocadorObjeto = new ColocadorObjeto(this);
-        
     }
     
     
@@ -110,9 +113,6 @@ public class PanelJuego extends JPanel implements Runnable{
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ventana.setResizable(false); 
         ventana.setTitle("Eco corssing: ");
-        
-        //iniciarlizar valores del panel 
-        inicializarValores(); 
         
         ventana.add(this); 
         ventana.pack();
