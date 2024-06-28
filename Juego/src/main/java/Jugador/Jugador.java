@@ -78,6 +78,16 @@ public class Jugador extends Entidad implements ManejadorPaquete, Comunicador{
         this.nombrePersonaje = nombrePersonaje; 
         this.personaje = new Personaje(nombrePersonaje);
     }
+    
+    public Jugador(String id, String nomprePersonaje, int mundoX, int mundoY, InetAddress ip, int puerto) throws SocketException{
+        this.id = id;
+        this.nombrePersonaje = nombrePersonaje; 
+        this.personaje = new Personaje(nombrePersonaje);
+        this.ip = ip; 
+        this.puerto = puerto; 
+        this.mundoX = mundoX; 
+        this.mundoY = mundoY; 
+    }
 
    //set / get 
 
@@ -220,6 +230,11 @@ public class Jugador extends Entidad implements ManejadorPaquete, Comunicador{
     @Override
     public String empaquetar(String[] datos) {
         return String.join(",", datos); 
+    }
+    
+    @Override
+    public String leerPaquete(DatagramPacket paquete) {
+        return new String(paquete.getData()); 
     }
     
     public void configurar(PanelJuego panel){
@@ -495,4 +510,6 @@ public class Jugador extends Entidad implements ManejadorPaquete, Comunicador{
         }
         return datos; 
     }
+
+
 }

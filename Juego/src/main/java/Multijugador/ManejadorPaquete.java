@@ -11,8 +11,9 @@ import java.net.DatagramPacket;
  * @author carlos
  */
 public interface ManejadorPaquete {
- 
     public String[] desempaquetar(DatagramPacket paquete); 
     public String empaquetar(String[] datos); 
     public String[] limpiar(String[] datos); 
+    public String leerPaquete(DatagramPacket paquete); 
+
 }

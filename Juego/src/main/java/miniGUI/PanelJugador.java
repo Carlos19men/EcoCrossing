@@ -9,6 +9,7 @@ import Juego.Juego;
 import Jugador.Jugador;
 import Jugador.JugadorFactory;
 import PanelJuego.PanelJuego;
+import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -109,7 +110,7 @@ public class PanelJugador extends javax.swing.JFrame {
             juego.panel.inicializarValores();
             
             //esperamos la señal del juego
-            DatagramPacket paquete = recibirPaquete(); 
+            System.out.println(jugador.leerPaquete(jugador.recibirPaquete()));
             
             //iniciamos el juego 
             juego.iniciarJuego();

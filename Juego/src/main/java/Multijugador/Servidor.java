@@ -107,6 +107,11 @@ public class Servidor implements Comunicador, ManejadorPaquete{
     public String empaquetar(String[] datos) {
         return String.join(",", datos); 
     }
+    
+    @Override
+    public String leerPaquete(DatagramPacket paquete) {
+        return new String(paquete.getData()); 
+    }
         
     public void iniciarServidor(Administrador admin, int cantidad)throws SocketException{
         //solicitamos el puerto y la ip
