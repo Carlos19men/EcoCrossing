@@ -1,6 +1,6 @@
 package com.mycompany.ecocrossing;
 
-import Objeto.OBJ_Basura;
+import Objeto.Basura;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -39,7 +39,8 @@ public class UI {
         this.panelJuego=panelJuego;
         arial_40= new Font("Arial", Font.PLAIN, 40);
         arial_80B= new Font("Arial", Font.BOLD, 80);
-        OBJ_Basura basura= new OBJ_Basura(panelJuego);
+        Basura basura= new Basura("papelera");
+        basura.cargar(panelJuego.tamannoRecuadros);
         imagenBasura= basura.imagen;
     }
     

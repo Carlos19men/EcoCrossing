@@ -12,19 +12,24 @@ import javax.imageio.ImageIO;
  *
  * @author Maria Sandoval
  */
-public class OBJ_Basura extends SuperObjeto {
-    
-    PanelJuego panelJuego;
+public class Basura extends SuperObjeto {
     
     //Constructor
-    public OBJ_Basura (PanelJuego panelJuego){ //Sin parametros
-        nombre="Basura";
-        try{
-            imagen= ImageIO.read(getClass().getResourceAsStream("/Objetos/basura.png"));
-            herramientaUtil.escalarImagen(imagen, panelJuego.tamannoRecuadros, panelJuego.tamannoRecuadros);
-        }catch(IOException e){
-            e.printStackTrace();
-        }
+    public Basura (String nombre){ //Sin parametros
+        this.nombre = nombre;
         colision=true;
     }
+    
+    //metodos 
+    public void cargar(int escala){
+        try{
+            imagen= ImageIO.read(getClass().getResourceAsStream("/Objetos/Basura/"+nombre+".png"));
+            herramientaUtil.escalarImagen(imagen, escala, escala);
+        }catch(IOException e){
+            System.out.println("Error al cargar la imagen (Line 29)");
+            e.printStackTrace();
+        }
+    }
+    
+    
 }

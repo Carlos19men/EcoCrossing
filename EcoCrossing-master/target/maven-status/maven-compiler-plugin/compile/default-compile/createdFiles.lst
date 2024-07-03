@@ -13,7 +13,6 @@ EcoCrossing\net\ClienteJuego$1.class
 EcoCrossing\net\paquetes\Paquete00Acceder.class
 Entidades\NPC_1.class
 Entidades\JugadorMultijugador.class
-Objeto\OBJ_Basura.class
 Entidades\NPC_2.class
 EcoCrossing\net\paquetes\Paquete02Mover.class
 com\mycompany\ecocrossing\AssetSetter.class
@@ -22,6 +21,7 @@ com\mycompany\ecocrossing\UI.class
 EcoCrossing\net\paquetes\Paquete$TiposPaquete.class
 EcoCrossing\net\paquetes\Paquete.class
 com\mycompany\ecocrossing\PanelJuego.class
+Objeto\Basura.class
 Recuadros\AdministradorRecuadros.class
 EcoCrossing\net\ServidorJuego$1.class
 Objeto\SuperObjeto.class

@@ -35,4 +35,9 @@ public class SuperObjeto {
             g2.drawImage(imagen, pantallaX, pantallaY, panelJuego.tamannoRecuadros, panelJuego.tamannoRecuadros, null);
        }
     }
+    
+    public void ubicar(int x, int y,int escala){
+        mundoX = x * escala;
+        mundoY = y * escala; 
+    }
 }

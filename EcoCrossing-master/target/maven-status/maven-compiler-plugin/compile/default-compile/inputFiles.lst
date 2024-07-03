@@ -1,25 +1,25 @@
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\com\mycompany\ecocrossing\AssetSetter.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\com\mycompany\ecocrossing\VerificarColision.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\EcoCrossing\net\paquetes\Paquete00Acceder.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\EcoCrossing\net\ServidorJuego.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\Entidades\Entidad.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\Entidades\NPC_1.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\Objeto\SuperObjeto.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\com\mycompany\ecocrossing\EcoCrossing.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\com\mycompany\ecocrossing\Sonido.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\Entidades\NPC_2.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\EcoCrossing\net\paquetes\Paquete03EliminarObjeto.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\Entidades\JugadorMultijugador.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\com\mycompany\ecocrossing\PanelJuego.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\EcoCrossing\net\paquetes\Paquete.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\Recuadros\AdministradorRecuadros.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\com\mycompany\ecocrossing\ManejoTeclas.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\Recuadros\Recuadro.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\com\mycompany\ecocrossing\HerramientaUtil.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\EcoCrossing\net\paquetes\Paquete01Desconectar.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\Entidades\Jugador.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\EcoCrossing\net\ClienteJuego.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\com\mycompany\ecocrossing\ManejoVentanas.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\com\mycompany\ecocrossing\UI.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\EcoCrossing\net\paquetes\Paquete02Mover.java
-C:\Users\Samis\OneDrive\Desktop\Proyecto Java\EcoCrossing-master\src\main\java\Objeto\OBJ_Basura.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\com\mycompany\ecocrossing\ManejoVentanas.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\com\mycompany\ecocrossing\HerramientaUtil.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\com\mycompany\ecocrossing\ManejoTeclas.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\EcoCrossing\net\paquetes\Paquete01Desconectar.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\com\mycompany\ecocrossing\VerificarColision.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\Objeto\Basura.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\Entidades\NPC_2.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\com\mycompany\ecocrossing\Sonido.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\EcoCrossing\net\paquetes\Paquete02Mover.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\Entidades\Entidad.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\Objeto\SuperObjeto.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\Recuadros\AdministradorRecuadros.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\com\mycompany\ecocrossing\PanelJuego.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\Entidades\NPC_1.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\Recuadros\Recuadro.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\com\mycompany\ecocrossing\EcoCrossing.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\EcoCrossing\net\paquetes\Paquete.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\Entidades\JugadorMultijugador.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\EcoCrossing\net\paquetes\Paquete00Acceder.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\com\mycompany\ecocrossing\AssetSetter.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\EcoCrossing\net\ServidorJuego.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\EcoCrossing\net\paquetes\Paquete03EliminarObjeto.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\Entidades\Jugador.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\com\mycompany\ecocrossing\UI.java
+C:\Users\carlos\Desktop\Proyecto de POO\EcoCrossing\EcoCrossing-master\src\main\java\EcoCrossing\net\ClienteJuego.java

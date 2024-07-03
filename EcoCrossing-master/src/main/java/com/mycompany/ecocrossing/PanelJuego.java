@@ -51,7 +51,7 @@ public class PanelJuego extends JPanel implements Runnable {
     
     // Entidades y objetos del juego
     public Jugador jugador = new Jugador("", this, manejoTeclas); // Jugador principal
-    public SuperObjeto obj[] = new SuperObjeto[10]; // Arreglo de objetos del juego
+    public SuperObjeto obj[] = new SuperObjeto[50]; // Arreglo de objetos del juego
     public Entidad npc[]= new Entidad[5]; //Arreglo npc's del juego
 
     // Estado del juego
